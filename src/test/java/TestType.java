@@ -1,4 +1,3 @@
-import TypeChecking.Typecheck;
 import org.junit.Test;
 
 import java.io.*;

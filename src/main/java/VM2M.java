@@ -4,10 +4,8 @@ import cs132.vapor.parser.VaporParser;
 import cs132.vapor.ast.VaporProgram;
 import cs132.vapor.ast.VBuiltIn.Op;
 import core.util.LOGGER;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+
+import java.io.*;
 
 
 public class VM2M {
@@ -42,6 +40,14 @@ public class VM2M {
     }
 
     return program;
+  }
+
+  public static InputStream generateCode(InputStream outputStream) throws Throwable {
+    log.info("Converting to MIPS");
+    MIPSVisitor mipsVisitor = new MIPSVisitor(parseVapor(outputStream, System.err));
+    log.info("Conversion to MIPS successful.");
+    outputStream.close();
+    return new ByteArrayInputStream(mipsVisitor.mipsProgram.getByteArray());
   }
 
   public static void main(String[] args) throws Throwable {

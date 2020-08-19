@@ -10,7 +10,7 @@ import core.util.LOGGER;
 import core.*;
 import core.util.util;
 
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 public class J2V {
@@ -18,12 +18,18 @@ public class J2V {
   private static transient LOGGER log = new LOGGER(J2V.class.getSimpleName(), true);
 
   private static MiniJavaParser parser = null;
-  private LinkedList<String> finalVaporCode;
+  private LinkedList<String> finalVaporCode = new LinkedList<>();
 
   public J2V(InputStream iStream) {
     if (parser == null) parser = new MiniJavaParser(iStream);
     else parser.ReInit(iStream);
-    finalVaporCode = new LinkedList<>();
+  }
+
+  public J2V(InputStream iStream, boolean reinit) {
+    if (reinit)
+      parser.ReInit(iStream);
+    else
+      parser = new MiniJavaParser(iStream);
   }
 
   public LinkedList<String> getFinalVaporCode() {
@@ -34,6 +40,15 @@ public class J2V {
     for (String line : finalVaporCode) {
       System.out.println(line);
     }
+  }
+
+  public byte[] getByteArray() {
+    StringBuilder sb = new StringBuilder();
+    for (String line : finalVaporCode) {
+      sb.append(line);
+      sb.append("\n");
+    }
+    return sb.toString().getBytes();
   }
 
   /**
@@ -255,6 +270,15 @@ public class J2V {
       root.accept(prettyPrintVisitor);
       prettyPrintVisitor.print();
     }
+  }
+
+  public static InputStream generateCode(String filename) throws Exception {
+    log.info("Converting to Vapor IR.");
+    J2V java2vapor = new J2V(new FileInputStream(new File(filename)), true);
+    java2vapor.generateTranslation();
+    InputStream outputStream = new ByteArrayInputStream(java2vapor.getByteArray());
+    log.info("Vapor IR conversion successful.");
+    return  outputStream;
   }
 
   public static void main(String[] args) throws Exception {

@@ -24,7 +24,7 @@ public class TestVaporM {
   }
 
   private String[] getVaporInterpreterOutput(String command) throws IOException {
-    ProcessBuilder pb = new ProcessBuilder("java", "-jar", "src/main/java/VaporIR/vapor.jar", "run", "-mips", command);
+    ProcessBuilder pb = new ProcessBuilder("java", "-jar", "src/main/java/lib/vapor.jar", "run", "-mips", command);
     Process p = pb.start();
     BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
     String line;

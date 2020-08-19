@@ -6,10 +6,7 @@ import cs132.vapor.ast.VBuiltIn.Op;
 
 import core.util.LOGGER;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.*;
 
 public class V2VM {
     private static final transient LOGGER log = new LOGGER(V2VM.class.getSimpleName(), true);
@@ -35,6 +32,14 @@ public class V2VM {
         }
 
         return program;
+    }
+
+    public static InputStream generateCode(InputStream outputStream) throws Throwable {
+        log.info("Converting to VaporM IR");
+        VaporMVisitor vmv = new VaporMVisitor(parseVapor(outputStream, System.err));
+        log.info("Conversion to VaporM IR successful");
+        outputStream.close();
+        return new ByteArrayInputStream(vmv.vaporMProgram.getByteArray());
     }
 
     public static void main(String[] args) throws Throwable {

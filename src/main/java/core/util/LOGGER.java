@@ -1,5 +1,7 @@
 package core.util;
 
+import jdk.jfr.Enabled;
+
 public class LOGGER {
 
   private static final String ANSI_RESET = "\u001B[0m";
@@ -14,10 +16,10 @@ public class LOGGER {
   private String className = null;
 
   private boolean log_status = true;
-  private boolean ENABLE = true;
+  private boolean ENABLE = false;
 
   private void print(String color, String msgType, String msg, int line) {
-    if (log_status == true) {
+    if (log_status) {
       if (ENABLE) {
         System.out.print(color);
         System.out.print("[" + msgType + "]: ");
@@ -98,6 +100,14 @@ public class LOGGER {
 
   public boolean getLogStatus() {
     return this.log_status && this.ENABLE;
+  }
+
+  public void disableGlobalLogging() {
+    ENABLE = false;
+  }
+
+  public void enableGlobalLogging() {
+    ENABLE = true;
   }
 
 }

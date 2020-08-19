@@ -47,4 +47,13 @@ public class MIPSProgram {
     }
   }
 
+  public byte[] getByteArray() {
+    StringBuilder sb = new StringBuilder();
+    for (String instr : instructions) {
+      sb.append(instr);
+      sb.append("\n");
+    }
+    return sb.toString().getBytes();
+  }
+
 }

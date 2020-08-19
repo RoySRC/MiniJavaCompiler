@@ -5,14 +5,6 @@ plugins {
 
 group 'MiniJavaCompiler'
 version ''
-
-test {
-    testLogging {
-        events "failed"
-        exceptionFormat "full"
-    }
-}
-
 sourceCompatibility = 1.8
 
 repositories {
@@ -21,9 +13,26 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    implementation files('./src/main/java/VaporMIR/vapor-parser.jar')
+    implementation files('./src/main/java/lib/vapor-parser.jar')
 }
 
+jar {
+    manifest {
+        attributes(
+                "Implementation-Title": "MiniJavaCompiler",
+                "Implementation-Version": 0.1,
+                "Main-Class": 'MiniJavaCompiler',
+                "Class-Path": 'lib/vapor-parser.jar'
+        )
+    }
+}
+
+test {
+    testLogging {
+        events "failed"
+        exceptionFormat "full"
+    }
+}
 
 testlogger {
     // pick a theme - mocha, standard, plain, mocha-parallel, standard-parallel or plain-parallel
