@@ -2,7 +2,7 @@ package VaporIR.Factory.LabelFactory;
 
 public class IF_ELSE implements Label {
 
-  private int counter;
+  private final int counter;
 
   public IF_ELSE(int counter) {
     this.counter = counter;

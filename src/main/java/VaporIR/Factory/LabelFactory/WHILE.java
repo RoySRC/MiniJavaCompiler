@@ -2,7 +2,7 @@ package VaporIR.Factory.LabelFactory;
 
 public class WHILE implements Label {
 
-  private int counter;
+  private final int counter;
 
   public WHILE(int counter) {
     this.counter = counter;

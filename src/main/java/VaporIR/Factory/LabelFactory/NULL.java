@@ -2,7 +2,7 @@ package VaporIR.Factory.LabelFactory;
 
 public class NULL implements Label {
 
-  private int counter;
+  private final int counter;
 
   public NULL(int counter) {
     this.counter = counter;

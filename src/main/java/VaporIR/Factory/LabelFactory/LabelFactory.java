@@ -12,7 +12,7 @@ public class LabelFactory {
 
   private LabelFactory() {}
 
-  public static enum TYPE {
+  public enum TYPE {
     IF_ELSE, WHILE, NULL, BOUNDS, TMPVAR, AND
   }
 

@@ -2,7 +2,7 @@ package VaporIR.Factory.LabelFactory;
 
 public class BOUNDS implements Label {
 
-  private int counter;
+  private final int counter;
 
   public BOUNDS(int counter) {
     this.counter = counter;
