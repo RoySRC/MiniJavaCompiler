@@ -20,13 +20,13 @@ public class SymTable {
   private static final LOGGER log = new LOGGER(SymTable.class.getSimpleName(), true);
 
   // Children of the current symbol table by identifier
-  private Map<String, SymTable> children = null;
+  private final Map<String, SymTable> children;
 
   // Parent of the current symbol table
-  private SymTable parent = null;
+  private final SymTable parent;
 
   // Each symbol in the symbol table needs to have a set of binding information
-  private Map<String, Binding>  childrenBindingInformation = null;
+  private final Map<String, Binding>  childrenBindingInformation;
 
   // Give the current symbol table a name
   private String name = null;
@@ -37,7 +37,7 @@ public class SymTable {
   // An array list of function identifiers
   private ArrayList<Binding> functionIdentifiers = null;
   private int functionIdentifierPointer = 0;
-  private Iterator<Binding> parameterListIterator = null;
+  private Iterator<Binding> parameterListIterator;
 
   /**
    * Constructor
@@ -194,7 +194,7 @@ public class SymTable {
 
     LinkedList<SymTable> symbolTableList = new LinkedList<>();
     symbolTableList.add(this);
-    while (symbolTableList.size() != 0) {
+    while (!symbolTableList.isEmpty()) {
       SymTable s = symbolTableList.remove();
       if (s == null)
         continue;
@@ -337,7 +337,7 @@ public class SymTable {
     Set<String> classes = new HashSet<>();
     classes.add(this.getName());
     q.add(this);
-    while (q.size() != 0) {
+    while (!q.isEmpty()) {
       SymTable s = q.remove();
       retVal = s.children.get(identifier);
       if (retVal != null)

@@ -3,7 +3,7 @@ package VaporIR.SymbolTableVisitor;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ReservedKeywords {
+public abstract class ReservedKeywords {
 
   private static Set<String> reservedWords = new HashSet<String>(){{
     add("int");

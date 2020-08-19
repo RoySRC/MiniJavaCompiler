@@ -17,7 +17,7 @@ public class SymbolTableInheritanceVisitor extends DepthFirstVisitor {
   // for logging
   private static final transient LOGGER log = new LOGGER(SymbolTableInheritanceVisitor.class.getSimpleName());
 
-  private SymTable globalSymbolTable = null;
+  private final SymTable globalSymbolTable;
   private boolean errorStatus = false;
 
   public SymbolTableInheritanceVisitor(SymTable initialSymbolTable) {
