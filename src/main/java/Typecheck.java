@@ -1,5 +1,3 @@
-package TypeChecking;
-
 import TypeChecking.MessagePrinter.MessagePrinter;
 import TypeChecking.PrettyPrintVisitor.PrettyPrintVisitor;
 import TypeChecking.SymbolTableVisitor.SymTable;

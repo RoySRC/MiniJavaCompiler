@@ -1,0 +1,35 @@
+const vmt_Operator
+  :Operator.compute
+
+func Main[in 0, out 2, local 1]
+  out[0] = 8
+  out[1] = :vmt_Operator
+  call :ObjAlloc
+  $t0 = $v0
+  local[0] = $t0
+  if $t0 goto :null1
+    Error("null pointer")
+  null1:
+  $t0 = local[0]
+  $t1 = [$t0+0]
+  $t1 = [$t1+0]
+  out[0] = $t0
+  call $t1
+  $t2 = $v0
+  PrintIntS($t2)
+  ret
+
+func Operator.compute[in 1, out 0, local 0]
+  $t0 = MulS(1 0)
+  $t1 = in[0]
+  [$t1+4] = $t0
+  $v0 = 0
+  ret
+
+func ObjAlloc[in 2, out 0, local 0]
+  $t0 = in[0]
+  $t1 = HeapAllocZ($t0)
+  $t0 = in[1]
+  [$t1+0] = $t0
+  $v0 = $t1
+  ret

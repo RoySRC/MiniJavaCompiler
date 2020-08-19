@@ -18,7 +18,7 @@ public class J2V {
   private static transient LOGGER log = new LOGGER(J2V.class.getSimpleName(), true);
 
   private static MiniJavaParser parser = null;
-  private LinkedList<String> finalVaporCode = null;
+  private LinkedList<String> finalVaporCode;
 
   public J2V(InputStream iStream) {
     if (parser == null) parser = new MiniJavaParser(iStream);
