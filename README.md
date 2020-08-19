@@ -132,3 +132,12 @@ which is saved as `add.java` navigate to the install directory and issue: `./Min
  _str0: .asciiz "null pointer\n"
  _str1: .asciiz "array index out of bounds\n"  
 ```
+
+## Running the generated MIPS code
+This project also comes with a run script that is located in the root directory of the project. This allows you to run
+your generated MIPS assembly code on the MARS MIPS emulator. To run the above generated `add.s` MIPS assembly code
+use the following command from the project root:
+```shell script
+./run ./install/add.s
+```
+This will generate a value of `33` on the terminal.
