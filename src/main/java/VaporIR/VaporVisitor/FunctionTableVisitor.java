@@ -21,7 +21,7 @@ public class FunctionTableVisitor extends DepthFirstVisitor {
   private static final transient LOGGER log = new LOGGER(FunctionTableVisitor.class.getName());
 
   private SymTable symbolTable = null;
-  private LinkedList<String> finalVaporCode = null;
+  private final LinkedList<String> finalVaporCode;
   private String indentation = "";
   private String currentClass = "";
 

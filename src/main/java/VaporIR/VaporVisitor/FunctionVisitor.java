@@ -21,18 +21,18 @@ public class FunctionVisitor extends GJDepthFirst<String, String> {
 
   private SymTable symbolTable = null;
   private final SymTable rootSymTable;
-  private LinkedList<String> finalVaporCode = null;
+  private final LinkedList<String> finalVaporCode;
   private String indentation = "";
 
-  private TMPVAR tmp = (TMPVAR) LabelFactory.getInstance().createLabel(LabelFactory.TYPE.TMPVAR);
+  private final TMPVAR tmp = (TMPVAR) LabelFactory.getInstance().createLabel(LabelFactory.TYPE.TMPVAR);
   private int OFFSET = 0;
   private String globalType = null;
 
   // Stacks
-  private Stack<SymTable> currentClassStack = new Stack<>();
-  private Map<String, LinkedList<String>> inheritanceLinks = null;
+  private final Stack<SymTable> currentClassStack = new Stack<>();
+  private final Map<String, LinkedList<String>> inheritanceLinks;
 
-  private MsgSendVars msgVars = new MsgSendVars();
+  private final MsgSendVars msgVars = new MsgSendVars();
   
   public FunctionVisitor(SymTable symTable, Map<String, LinkedList<String>> inheritance, LinkedList<String> finalVaporCode) {
     this.symbolTable = symTable;
@@ -1279,11 +1279,8 @@ public class FunctionVisitor extends GJDepthFirst<String, String> {
   @Override
   public String visit(PrimaryExpression n, String argu) {
     log.info("Entered "+n.getClass().getSimpleName());
-
     log.info(log.CYAN(argu));
-    String retVal = n.f0.accept(this, argu);
-
-    return retVal;
+    return n.f0.accept(this, argu);
   }
 
   /**
