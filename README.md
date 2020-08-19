@@ -146,7 +146,7 @@ use the following command from the project root:
 This will generate a value of `33` on the terminal.
 
 ## In-code citation
-All external resources used are cited within the code.
+All external resources used during the project are cited within the code.
 
 ## License
 MIT License
