@@ -3,8 +3,15 @@ plugins {
     id 'com.adarshr.test-logger' version '1.7.1'
 }
 
-group 'HW2'
+group 'MiniJavaCompiler'
 version ''
+
+test {
+    testLogging {
+        events "failed"
+        exceptionFormat "full"
+    }
+}
 
 sourceCompatibility = 1.8
 
