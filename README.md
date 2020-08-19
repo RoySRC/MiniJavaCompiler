@@ -1,3 +1,6 @@
+![](https://www.code-inspector.com/project/12409/score/svg?branch=master)
+![](https://www.code-inspector.com/project/12409/status/svg?branch=master)
+
 # MiniJAVA Cimpiler
 This is a full blown miniJAVA compiler for the MIPS platform. This compiler uses the vapor programming language as an intermediate representation and does incremental lowering to vapor-M and finally to MIPS assembly.
 
