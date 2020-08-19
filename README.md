@@ -2,7 +2,10 @@
 ![](https://www.code-inspector.com/project/12409/status/svg?branch=master&kill_cache=1)
 
 # MiniJAVA Cimpiler
-This is a full blown miniJAVA compiler for the MIPS platform. This compiler uses the vapor programming language as an intermediate representation and does incremental lowering to vapor-M and finally to MIPS assembly.
+This is a miniJAVA compiler for the MIPS platform. This compiler uses the vapor programming language as an intermediate representation and does incremental lowering to vapor-M and finally to MIPS assembly. This compiler only supports printing of integer values to screen, printing of strings are not supported.
+
+## MiniJAVA Grammar and TypeSystem
+The Backus–Naur form of the minijava programming language can be found [here](http://www.cambridge.org/resources/052182060X/MCIIJ2e/grammar.htm). Documentation relating to the  MiniJava type system can be found [here](https://cs.colostate.edu/~pouchet/classes/CS453SP20/hw25-minijava/cs453/doc/miniJava-typesystem.pdf).
 
 ## TypeChecking
 In this homework assignment we build a type check system for the miniJAVA programming language. The input to this program is a valid miniJAVA program that parses but does not necessarily type check. The output of this program is either "Program type checked successfully" or "Type error". If there is a type error such as assigning an integer to a boolean the program will output "Type error", else the program will output "Program type checked successfully". This assignment also deals with checking for implicit type casting. For instance if we have two classes: class A and C, and A extends C, then the following program should type check:
@@ -141,3 +144,29 @@ use the following command from the project root:
 ./run ./install/add.s
 ```
 This will generate a value of `33` on the terminal.
+
+## In-code citation
+All external resources used are cited within the code.
+
+## License
+MIT License
+
+Copyright (c) 2020 RoySRC
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
