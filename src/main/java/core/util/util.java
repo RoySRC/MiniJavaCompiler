@@ -25,4 +25,16 @@ public class util {
         else
             return false;
     }
+
+    /**
+     * Adapted from https://mkyong.com/java/java-how-to-check-if-a-string-is-numeric/
+     * @param s
+     * @return
+     */
+    public static boolean isNumeric(String s) {
+        for (char c : s.toCharArray())
+            if (!Character.isDigit(c))
+                return false;
+        return true;
+    }
 }
