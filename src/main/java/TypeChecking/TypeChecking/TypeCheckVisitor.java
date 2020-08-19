@@ -916,12 +916,12 @@ public class TypeCheckVisitor extends DepthFirstVisitor {
 
       LinkedList<SymTable> symTableList = primaryExpressionSymbolTable.getSymTableList(identifier);
       log.info("Num Identifiers: "+symTableList.size());
-      if (symTableList.size() == 0) {
+      if (symTableList.isEmpty()) {
         throw new TypeCheckException("Cannot find identifier: "+n.f2.f0.tokenImage+"()");
       }
       BindingInformation binding = null;
 
-      while (symTableList.size() != 0) {
+      while (!symTableList.isEmpty()) {
         SymTable symTable = symTableList.remove();
         if (log.getLogStatus()) {
           log.info("Parent: "+symTable.getParent().getName());
