@@ -37,6 +37,9 @@ public class MiniJavaCompiler {
           break;
       }
     }
+    if (output_file == null) {
+      output_file = filename.substring(0, filename.indexOf(".java"));
+    }
 
     boolean programTypeChecks = MiniJavaCompiler.typeCheck();
 

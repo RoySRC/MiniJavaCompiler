@@ -11,3 +11,4 @@ install:
 	@cp $(BUILD_LIBS)/MiniJavaCompiler.jar $(DESTDIR)
 	@cp MiniJavaCompiler $(DESTDIR)
 	@chmod +x $(DESTDIR)/MiniJavaCompiler
+	@chmod +x run

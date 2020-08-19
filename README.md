@@ -51,3 +51,84 @@ Once the live-in and live-out sets are computed. the live range for a variable a
 
 ## MIPS Assembly
 This is the last translation phase in the miniJAVA compiler. This translation phase takes in a vapor-M program and translates it into MIPS assembly using the vapor-M visitor to visit every node in the vapor-M abstract syntax tree and generate MIPS assembly code for that node. Here, the compiler must generate code that takes of stack frame allocations and deallocations during function calls. The compiler must also generate code for vapor and vapor-M builtins such as `HeapAllocZ`.
+
+## Usage Example
+This project requires that gradle be installed. Before you can run the project, you need to install it. This is done
+by running the `make install` command. Once this command is issued, you will see a `install` directory. The
+`MiniJavaCompiler` executable is located in this directory. To compile, for instance, the following program:
+```java
+class Main {
+    public static void main(String[] a){
+      System.out.println(12 + 21);
+    }
+}
+```
+which is saved as `add.java` navigate to the install directory and issue: `./MiniJavaCompiler --file add.java --o add
+.s`. This will generate a file with the `.s` extension containing the MIPS assembly code of `add.java`. To get
+ verbose details on the assembly code generation process use the additional `--verbose` flag. The generated assembly
+  code for the above program is laid out below:
+```mips
+.data
+ 
+ .text
+ 
+   jal Main
+   li $v0 10
+   syscall
+ 
+ Main:
+   sw $fp -8($sp)
+   move $fp $sp
+   subu $sp $sp 76
+   sw $ra -4($fp)
+   li $t0 33 #2
+   move $a0 $t0
+   jal _print
+   lw $ra -4($fp)
+   lw $fp -8($fp)
+   addu $sp $sp 76
+   jr $ra
+ 
+ AllocArray:
+   sw $fp -8($sp)
+   move $fp $sp
+   subu $sp $sp 76
+   sw $ra -4($fp)
+   move $t1 $a0
+   mul $t0 $t1 4
+   addu $t0 $t0 4
+   move $a0 $t0
+   jal _heapAlloc
+   move $t2 $v0
+   sw $t1 0($t2)
+   move $v0 $t2
+   lw $ra -4($fp)
+   lw $fp -8($fp)
+   addu $sp $sp 76
+   jr $ra
+ 
+ _print:
+   li $v0 1   # syscall: print integer
+   syscall
+   la $a0 _newline
+   li $v0 4   # syscall: print string
+   syscall
+   jr $ra
+ 
+ _error:
+   li $v0 4   # syscall: print string
+   syscall
+   li $v0 10  # syscall: exit
+   syscall
+ 
+ _heapAlloc:
+   li $v0 9   # syscall: sbrk
+   syscall
+   jr $ra
+ 
+ .data
+ .align 0
+ _newline: .asciiz "\n"
+ _str0: .asciiz "null pointer\n"
+ _str1: .asciiz "array index out of bounds\n"  
+```
