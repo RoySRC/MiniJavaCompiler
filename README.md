@@ -1,4 +1,5 @@
 # MiniJAVA Cimpiler
+This is a full blown miniJAVA compiler for the MIPS platform. This compiler uses the vapor programming language as an intermediate representation and does incremental lowering to vapor-M and finally to MIPS assembly.
 
 ## TypeChecking
 In this homework assignment we build a type check system for the miniJAVA programming language. The input to this program is a valid miniJAVA program that parses but does not necessarily type check. The output of this program is either "Program type checked successfully" or "Type error". If there is a type error such as assigning an integer to a boolean the program will output "Type error", else the program will output "Program type checked successfully". This assignment also deals with checking for implicit type casting. For instance if we have two classes: class A and C, and A extends C, then the following program should type check:
