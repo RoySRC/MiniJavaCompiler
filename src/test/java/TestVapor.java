@@ -1,3 +1,4 @@
+import core.MiniJavaParser;
 import org.junit.Test;
 
 import java.io.*;
@@ -8,6 +9,10 @@ import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
 
 public class TestVapor {
+
+  private MiniJavaParser getParser(InputStream iStream) {
+    return MiniJavaParserStatic.getParser(iStream);
+  }
 
   private String[] Expected(String filename) throws FileNotFoundException {
     File file = new File(filename);
@@ -48,21 +53,16 @@ public class TestVapor {
 
   private void deleteFile(String filename) {
     File file = new File(filename);
-
     if(file.delete())
-    {
       System.out.println("File deleted successfully");
-    }
     else
-    {
       System.out.println("Failed to delete the file");
-    }
   }
 
   private void TEST(String testFileName) throws Exception {
     String filename = "./src/test/resources/VaporIRTestResource/input/"+testFileName+".java";
     String expected = "./src/test/resources/VaporIRTestResource/out/"+testFileName+".out";
-    J2V java2vapor = new J2V(new FileInputStream(new File(filename)));
+    J2V java2vapor = new J2V(getParser(new FileInputStream(new File(filename))));
     java2vapor.generateTranslation();
     writeToFile(java2vapor, testFileName);
     String[] actual = getVaporInterpreterOutput("/tmp/"+testFileName+".vapor");

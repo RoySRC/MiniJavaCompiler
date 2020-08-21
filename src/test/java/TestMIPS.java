@@ -9,6 +9,8 @@ import static org.junit.Assert.assertArrayEquals;
 
 public class TestMIPS {
 
+  private final String mipsJarLocation = "src/main/java/lib/mars.jar";
+
   private String[] Expected(String filename) throws FileNotFoundException {
     File file = new File(filename);
     LinkedList<String> list = new LinkedList<>();
@@ -24,7 +26,7 @@ public class TestMIPS {
   }
 
   private String[] getVaporInterpreterOutput(String command) throws IOException {
-    ProcessBuilder pb = new ProcessBuilder("java", "-jar", "src/main/java/MIPS/mars.jar", "nc", command);
+    ProcessBuilder pb = new ProcessBuilder("java", "-jar", mipsJarLocation, "nc", command);
     Process p = pb.start();
     BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
     String line;

@@ -17,8 +17,11 @@ public class Typecheck {
   private static MiniJavaParser parser = null;
 
   public Typecheck(InputStream iStream) {
-    if (parser == null) parser = new MiniJavaParser(iStream);
-    else parser.ReInit(iStream);
+    parser = new MiniJavaParser(iStream);
+  }
+
+  public Typecheck(MiniJavaParser parser) {
+    this.parser = parser;
   }
 
   /**

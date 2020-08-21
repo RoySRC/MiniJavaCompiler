@@ -25,6 +25,10 @@ public class J2V {
     else parser.ReInit(iStream);
   }
 
+  public J2V(MiniJavaParser parser) {
+    this.parser = parser;
+  }
+
   public J2V(InputStream iStream, boolean reinit) {
     if (reinit)
       parser.ReInit(iStream);
