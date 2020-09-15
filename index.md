@@ -2,9 +2,7 @@
 ![](https://www.code-inspector.com/project/12409/status/svg?branch=master&kill_cache=1)
 
 # MiniJAVA Compiler
-This is a miniJAVA compiler for the MIPS platform. This compiler uses the vapor programming language as an
-intermediate representation and does incremental lowering to vapor-M and finally to MIPS assembly. This compiler only
-supports printing of integer values to screen, printing of strings are not supported.
+This is a miniJAVA compiler for the MIPS platform. 
 
 ## MiniJAVA Grammar and TypeSystem
 The Backus–Naur form of the minijava programming language can be found 
@@ -13,7 +11,10 @@ type system can be found
 [here](https://cs.colostate.edu/~pouchet/classes/CS453SP20/hw25-minijava/cs453/doc/miniJava-typesystem.pdf).
 
 ## Project Layout
-This project is separated into five modules:
+This compiler uses the vapor programming language as an intermediate representation and does incremental lowering to
+vapor-M and finally to MIPS assembly. This compiler only supports printing of integer values to screen, printing of
+strings are not supported. This project is separated into five modules:
+
 * Typechecking
 * Vapor Intermediate Representation (IR) code generation
 * Vapor-M (Vapor-Machine) IR code generation
@@ -21,9 +22,9 @@ This project is separated into five modules:
 
 The typechecking system is responsible for making sure that all types in the user input minJava program is valid, and
 that the compiler during later steps of code generation does not do invalid implicit type conversion. This system is
-also responsible for checking for circular inheritance. All of this is done through the use of a hierarchical symbol
-table and the visitor design pattern. If this system encounters a program that fails to typecheck, a `Type error
-` message is printed to stdout, else the control is passed to the Vapor IR code generation system.
+also responsible for checking for circular inheritance. All of this is done through the use of a hierarchical
+scoped symbol table and the visitor design pattern. If this system encounters a program that fails to typecheck, a
+ `Type error` message is printed to stdout, else the control is passed to the Vapor IR code generation system.
 
 The Vapor IR code generation system is responsible for translating a valid miniJava program that typechecks into its
 equivalent Vapor intermediate representation. The reason it is done is because it is very difficult and more error
