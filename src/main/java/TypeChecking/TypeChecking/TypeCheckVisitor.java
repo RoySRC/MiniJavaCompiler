@@ -938,8 +938,7 @@ public class TypeCheckVisitor extends DepthFirstVisitor {
         );
         if (tempSymbolTablePtr.get(tempSymbolTablePtr.size() - 1).s == null)
           throw new TypeCheckException("Cannot find class: " + globalType);
-        n.f4.accept(this); // typecheck the expression list
-//        if (getErrorStatus()) errorStatus = false;
+        n.f4.accept(this); // typecheck the expression lis
 
         // check if all the parameters have been consumed
         log.info("Number of parameters remaining: " + tempSymbolTablePtr.get(tempSymbolTablePtr.size() - 1).parameterCount);
@@ -985,7 +984,7 @@ public class TypeCheckVisitor extends DepthFirstVisitor {
     log.info(log.CYAN("Global Type: " + globalType));
 
     // Get a list of binding information of all the function parameters
-    ArrayList<BindingInformation> types = symbolTablePointer.getBindingInformationList("param");
+    ArrayList<BindingInformation> types = symbolTablePointer.getParametersList();
     log.info("Number of params: " + types.size());
 
     log.info("Visiting Expression().");
@@ -1003,7 +1002,6 @@ public class TypeCheckVisitor extends DepthFirstVisitor {
       log.error("Not the right function.");
       log.error("This function takes 0 args, but 1 was given.");
       return;
-//        throw new TypeCheckException("Function takes 0 args, but 1 was given.");
     }
     String arg0type = ((NodeToken) binding.getType().f0.choice).tokenImage;
     log.info("Comparing argument type " + arg0type + " to " + globalType);

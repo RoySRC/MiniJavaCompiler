@@ -2,13 +2,44 @@
 ![](https://www.code-inspector.com/project/12409/status/svg?branch=master&kill_cache=1)
 
 # MiniJAVA Compiler
-This is a miniJAVA compiler for the MIPS platform. This compiler uses the vapor programming language as an intermediate representation and does incremental lowering to vapor-M and finally to MIPS assembly. This compiler only supports printing of integer values to screen, printing of strings are not supported.
+This is a miniJAVA compiler for the MIPS platform. This compiler uses the vapor programming language as an
+intermediate representation and does incremental lowering to vapor-M and finally to MIPS assembly. This compiler only
+supports printing of integer values to screen, printing of strings are not supported.
 
 ## MiniJAVA Grammar and TypeSystem
-The Backus–Naur form of the minijava programming language can be found [here](http://www.cambridge.org/resources/052182060X/MCIIJ2e/grammar.htm). Documentation relating to the  MiniJava type system can be found [here](https://cs.colostate.edu/~pouchet/classes/CS453SP20/hw25-minijava/cs453/doc/miniJava-typesystem.pdf).
+The Backus–Naur form of the minijava programming language can be found 
+[here](http://www.cambridge.org/resources/052182060X/MCIIJ2e/grammar.htm). Documentation relating to the  MiniJava
+type system can be found 
+[here](https://cs.colostate.edu/~pouchet/classes/CS453SP20/hw25-minijava/cs453/doc/miniJava-typesystem.pdf).
+
+## Project Layout
+This project is separated into five modules:
+* Typechecking
+* Vapor Intermediate Representation (IR) code generation
+* Vapor-M (Vapor-Machine) IR code generation
+* MIPS assembly code generation
+
+The typechecking system is responsible for making sure that all types in the user input minJava program is valid, and
+that the compiler during later steps of code generation does not do invalid implicit type conversion. This system is
+also responsible for checking for circular inheritance. All of this is done through the use of a hierarchical symbol
+table and the visitor design pattern. If this system encounters a program that fails to typecheck, a `Type error
+` message is printed to stdout, else the control is passed to the Vapor IR code generation system.
+
+The Vapor IR code generation system is responsible for translating a valid miniJava program that typechecks into its
+equivalent Vapor intermediate representation. The reason it is done is because it is very difficult and more error
+prone to directly translate an object-oriented programming language such as miniJava into assembly. As a result we
+use the strategy of incremental lowering to translate a miniJava program into assembly. The Vapor IR code generation
+system is responsible for doing one way implicit type casting and function overriding in miniJava. To accomplish the
+generation  of Vapor IR code, this system also uses a symbol table that is different from the symbol table in the
+Typechecking system. The difference in the symbol table is in the binding information of the symbols. 
 
 ## TypeChecking
-In this homework assignment we build a type check system for the miniJAVA programming language. The input to this program is a valid miniJAVA program that parses but does not necessarily type check. The output of this program is either "Program type checked successfully" or "Type error". If there is a type error such as assigning an integer to a boolean the program will output "Type error", else the program will output "Program type checked successfully". This assignment also deals with checking for implicit type casting. For instance if we have two classes: class A and C, and A extends C, then the following program should type check:
+In this homework assignment we build a type check system for the miniJAVA programming language. The input to this
+program is a valid miniJAVA program that parses but does not necessarily type check. The output of this program is
+either "Program type checked successfully" or "Type error". If there is a type error such as assigning an integer to
+a boolean the program will output "Type error", else the program will output "Program type checked successfully
+". This assignment also deals with checking for implicit type casting. For instance if we have two classes: class A
+and C, and A extends C, then the following program should type check:
 ```
 class Main {
   public static void main(String[] args) {
@@ -37,7 +68,8 @@ class C {
     }
 }
 ```
-In addition to checking for implicit typecasts, the program also checks for circular inheritance. If a circular inheritance is detected, the program prints "Type error".
+In addition to checking for implicit typecasts, the program also checks for circular inheritance. If a circular
+inheritance is detected, the program prints "Type error".
 
 ## Vapor IR
 For this assignment, we built a vapor translator for the miniJAVA programming language. The vapor programming language is one level closer to the MIPS assembly than miniJAVA. In the vapor programming language, the stack is managed by the vapor interpreter. Also, in this programming language there is an infinite number of registers. This program visits every node in the miniJAVA Abstract Syntax Tree (AST), and translates it to its vapor representation. 

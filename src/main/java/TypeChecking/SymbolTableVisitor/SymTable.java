@@ -72,8 +72,8 @@ public class SymTable {
         System.out.printf("\u001b[4m");
 
       String typeName = ((NodeToken)(this.childrenBindingInformation.get(id).getType().f0.choice)).tokenImage;
-      String typeScope = this.childrenBindingInformation.get(id).getScope();
-      System.out.printf("%15s │%15s", id, "<"+typeName+", "+typeScope+">");
+      boolean typeScope = this.childrenBindingInformation.get(id).isParam();
+      System.out.printf("%15s │%15s", id, "<"+typeName+", "+(typeScope?"param":"null")+">");
 
       if (i+1 != j)
         System.out.println();
@@ -355,15 +355,20 @@ public class SymTable {
     return this.children;
   }
 
-  public ArrayList<BindingInformation> getBindingInformationList(String scope) {
+  /**
+   * The following function scans a symbol table and returns a list of all the parameters. If the symbol table does
+   * not contain any parameters, the function returns an empty list.
+   * @return
+   */
+  public ArrayList<BindingInformation> getParametersList() {
     log.info("getBindingInformationList(): "+getName());
     functionIdentifiers = new ArrayList<>();
     for (String id : getSymbolKeySet()) {
       BindingInformation binding = getBindingInformation(id);
-      if (binding == null || binding.getScope() == null)
+      if (binding == null || !binding.isParam())
         continue;
       log.info("Binding: "+binding);
-      if (binding.getScope().equals(scope)) {
+      if (binding.isParam()) {
         functionIdentifiers.add(binding);
       }
     }
@@ -389,9 +394,9 @@ public class SymTable {
     int rv = 0;
     for (String id : getSymbolKeySet()) {
       BindingInformation binding = getBindingInformation(id);
-      if (binding == null || binding.getScope() == null)
+      if (binding == null || !binding.isParam())
         continue;
-      if (binding.getScope().equals("param"))
+      if (binding.isParam())
         rv++;
     }
     return rv;

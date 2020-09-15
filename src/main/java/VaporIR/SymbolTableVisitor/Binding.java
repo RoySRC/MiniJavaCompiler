@@ -10,16 +10,12 @@ import core.syntaxtree.Type;
 
 public class Binding {
 
-  private Type type = null;
+  private Type type;
   private int scope = SCOPE.NULL;
   private int scopeName = SCOPE.NULL;
 
   public Binding(Type type) {
     this.type = type;
-  }
-
-  public Binding(int scope) {
-    this.scope = scope;
   }
 
   public static class SCOPE {

@@ -398,7 +398,7 @@ public class SymbolTableVisitor implements Visitor {
     if (getErrorStatus()) return;
 
     // set the scope of the last inserted function parameter
-    globalSymbolTable.getBindingInformation(globalSymbolTable.getLastInsertedSymbol()).setScope("param");
+    globalSymbolTable.getBindingInformation(globalSymbolTable.getLastInsertedSymbol()).setIsParam();
     log.info("Left "+n.getClass().getSimpleName());
   }
 
