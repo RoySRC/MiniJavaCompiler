@@ -227,7 +227,7 @@ public class SymTable {
   }
 
   /**
-   * Get the symbol table of the parent class
+   * Get the symbol table of the parent class. Used in the case of inheritance.
    * @return
    */
   public SymTable getParentClass() {
@@ -237,6 +237,7 @@ public class SymTable {
       String type = node.tokenImage;
       if (type.equals("class")) {
         parent = children.get(id);
+        break;
       }
     }
     return parent;

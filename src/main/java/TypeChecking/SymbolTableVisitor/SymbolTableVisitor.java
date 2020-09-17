@@ -4,7 +4,6 @@ import TypeChecking.TypeChecking.TypeCheckException;
 import core.syntaxtree.*;
 import core.util.LOGGER;
 import core.visitor.DepthFirstVisitor;
-import core.visitor.Visitor;
 
 import java.util.Enumeration;
 
@@ -20,7 +19,7 @@ public class SymbolTableVisitor extends DepthFirstVisitor {
   // for logging
   private static final transient LOGGER log = new LOGGER(SymbolTableVisitor.class.getSimpleName(), false);
 
-  private SymTable globalSymbolTable = null;
+  private SymTable globalSymbolTable;
   private boolean errorStatus = false;
 
   public SymbolTableVisitor() {
@@ -83,7 +82,6 @@ public class SymbolTableVisitor extends DepthFirstVisitor {
     if (getErrorStatus()) return;
     if ( n.present() ) {
       n.node.accept(this);
-      if (getErrorStatus()) return;
     }
   }
 
@@ -248,7 +246,6 @@ public class SymbolTableVisitor extends DepthFirstVisitor {
     log.info("Left "+n.getClass().getSimpleName());
   }
 
-  // TODO: Complete this.
   /**
    * f0 -> "class"
    * f1 -> Identifier()

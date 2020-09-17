@@ -1,5 +1,3 @@
-
-
 /**
  * This class typechecks
  */

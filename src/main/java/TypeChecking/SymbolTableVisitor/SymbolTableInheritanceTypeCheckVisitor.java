@@ -12,7 +12,7 @@ public class SymbolTableInheritanceTypeCheckVisitor extends DepthFirstVisitor {
   // for logging
   private static final transient LOGGER log = new LOGGER(SymbolTableInheritanceTypeCheckVisitor.class.getSimpleName());
 
-  private SymTable symbolTable = null;
+  private SymTable symbolTable;
   private boolean errorStatus = false;
 
   public SymbolTableInheritanceTypeCheckVisitor(SymTable S) {

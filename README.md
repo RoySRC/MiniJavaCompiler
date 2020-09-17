@@ -68,14 +68,108 @@ is done through the function prologue and epilogue before the call to the functi
 In this section we describe the Typechecking system in depth, including the data structures and the layout of the
 symbol table.
 
-### Symbol Table
-The symbol table is the core component of the Typechecking system.
+### Symbol Table Visitor
+The symbol table is the core component of the type checking system. We are using a scoped hierarchical symbol table
+data structure to efficiently capture information about functions in classes, variables in functions and inheritance
+hierarchy. The hierarchical symbol table is a tree based data structure where the nodes are tables with two columns
+. The first column contains the symbols, and the second column contains the binding information of the symbols. The
+binding information stores information about the type of the symbol and whether the symbol is a parameter. If the
+symbol is a function identifier, then the type in the binding information is the return type of the function.
 
-In this homework assignment we build a type check system for the miniJAVA programming language. The input to this
-program is a valid miniJAVA program that parses but does not necessarily type check. The output of this program is
-either "Program type checked successfully" or "Type error". If there is a type error such as assigning an integer to
-a boolean the program will output "Type error", else the program will output "Program type checked successfully
-". This assignment also deals with checking for implicit type casting. For instance if we have two classes: class A
+To build the symbol table we perform three passes over the MiniJava program.  The first pass builds a preliminary
+hierarchical symbol table tree data structure. In addition to building the tree based data structure, it also checks
+for duplicate declaration of identifiers. If a duplicate declaration of an identifier is found, an error will be
+thrown. We illustrate this first pass with the following code example:
+```c++
+/**
+ * This class typechecks
+ */
+
+class A {
+  public static void main(String[] args) {
+    B b;
+    b = new B();
+    System.out.println(b.a());
+  }
+}
+
+class B extends C {
+  int a;
+  public int a() {
+    int c;
+    c = this.c();
+    a = 12 * c;
+    return a;
+  }
+}
+
+class C {
+  int c;
+
+  public int c() {
+    c = 12;
+    return c;
+  }
+}
+```
+The symbol table for the above code block after the first pass is as follows:
+![](pictures/Typecheck_symbol_table_eample.png)
+
+As can be seen from the above generated symbol table that the global symbol table stores pointers to the symbol
+tables of all classes. In this case there are three classes: `A`, `B`, and `C`. The binding information for these
+three symbols in the global symbol table is `<class, null>`. This is because `A`, `B`, and `C` are classes. The
+symbol tables for the three classes contains pointers to the symbol tables of member variables and functions. The
+symbol tables for functions contains pointers to the symbol tables of the variables declared in the function scope
+and the function parameter list. One thing that can be observed from the above generated symbol table is that there
+is no link between the symbol `C` in the symbol table for B and the symbol table of class `C`. There should be a link
+between these two because class `B` inherits from class `C`, and the link makes it possible to access all the member
+variables and functions in class `C` from class `B`. This link is added in the second pass.
+
+The second pass in the symbol table visitor is responsible for creating the inheritance links between nodes of the
+hierarchical symbol table data structure. After the second pass, the above symbol table looks as follows:
+![](pictures/Typecheck_symbol_table_example_inheritance_link.png)
+
+This second pass uses a different symbol table visitor called the symbol table inheritance visitor. Notice the red
+link. This link signifies that class `B` inherits from class `C`. During the second pass, an error is thrown if a
+class inherits from a class that does not exist. 
+
+After the second pass, there is one additional pass - done by a different symbol table visitor - that checks the
+completed symbol table for circular inheritance. This symbol table visitor is called the symbol table inheritance
+type check visitor. The algorithm for circular inheritance detection is as follows:
+```
+Input: Symbol table node of the child class
+Output: True of circular inheritance detected, False otherwise
+InheritanceChain = set()
+ParentClass = getparent(Input)
+While there is a ParentClass
+	If ParentClass not in InheritanceChain
+		Add ParentClass to InheritanceChain
+	Else if ParentClass in InheritanceChain
+		Return True
+	ParentClass = getParent(ParentClass)
+Return False
+```
+The intuition for the algorithm is that, given a child class node, continually try to find the parent until a base
+class is encountered. If a class inherits from any other class that is already in the partial inheritance chain
+, there is a circular inheritance. The reason for the inheritance chain is that if there are three classes: `A`, `B
+`, and `C`, and `A` inherits from `B` and `B` inherits from `C`, then `A` will have access to all the member
+variables and functions of both classes `B` and `C`.
+
+Once the symbol table passes this final pass, it is then used by the Typecheck visitor. To perform additional type
+checking.
+
+### Typecheck Visitor
+
+
+
+
+
+
+
+
+
+
+This assignment also deals with checking for implicit type casting. For instance if we have two classes: class A
 and C, and A extends C, then the following program should type check:
 ```
 class Main {
