@@ -13,7 +13,11 @@ type system can be found
 [here](https://cs.colostate.edu/~pouchet/classes/CS453SP20/hw25-minijava/cs453/doc/miniJava-typesystem.pdf).
 
 ## Project Layout
-This project is separated into five modules:
+This project is separated into five modules, where each module does incremental lowering of the original miniJava
+program. The reason this is done is because it is very difficult and more error prone to directly translate an object
+-oriented programming language such as miniJava with high level constructs such as function overriding and
+inheritance into assembly. As a result we use the strategy of incremental lowering though the use of the visitor
+design pattern to translate a miniJava program into assembly. 
 
 * Typechecking
 * Vapor Intermediate Representation (IR) code generation
@@ -27,12 +31,14 @@ scoped symbol table and the visitor design pattern. If this system encounters a 
  `Type error` message is printed to stdout, else the control is passed to the Vapor IR code generation system.
 
 The Vapor IR code generation system is responsible for translating a valid miniJava program that typechecks into its
-equivalent Vapor intermediate representation. The reason it is done is because it is very difficult and more error
-prone to directly translate an object-oriented programming language such as miniJava into assembly. As a result we
-use the strategy of incremental lowering to translate a miniJava program into assembly. The Vapor IR code generation
-system is responsible for doing one way implicit type casting and function overriding in miniJava. To accomplish the
-generation  of Vapor IR code, this system also uses a symbol table that is different from the symbol table in the
-Typechecking system. The difference in the symbol table is in the binding information of the symbols. 
+equivalent Vapor intermediate representation. The Vapor IR code generation system is responsible for doing one way
+implicit type casting and function overriding. To accomplish the generation of Vapor IR code, this system also uses a
+symbol table that is different from the symbol table in the Typechecking system. The difference in the symbol table
+is in the binding information of the symbols. The binding information of symbols in this symbol table contains three
+fields: type name, offset, and scope as opposed to two fields in the Typechecking system. This module is also
+responsible for creating the memory layout of the user input miniJava program.
+
+
 
 ## TypeChecking
 In this homework assignment we build a type check system for the miniJAVA programming language. The input to this
