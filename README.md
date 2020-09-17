@@ -57,7 +57,12 @@ from the `in` stack. The `local` represents the number of variables in the curre
 the function local stack. These are generally values for variables that have been spilled by the register allocation
 algorithm.
 
-
+The MIPS assembly code generator is the final phase in the miniJava compiler. This is responsible for taking in the
+code generated from the Vapor-M IR code generation system, and translating it into MIPS assembly to be run on the
+MIPS emulator. Unlike the vapor intermediate representations, the MIPS assembly has no built-in functions such as
+`PrintIntS()`, `Error()`, and `HeapAllocZ()`. Implementations for these built-ins are inserted in the epilogue
+section of the final MIPS code. In MIPS assembly we also have to generate the function call stack manually. This
+is done through the function prologue and epilogue before the call to the function.
 
 ## TypeChecking
 In this homework assignment we build a type check system for the miniJAVA programming language. The input to this
