@@ -17,12 +17,9 @@ This project is separated into five modules, where each module does incremental 
 program. The reason this is done is because it is very difficult and more error prone to directly translate an object
 -oriented programming language such as miniJava with high level constructs such as function overriding and
 inheritance into assembly. As a result we use the strategy of incremental lowering though the use of the visitor
-design pattern to translate a miniJava program into assembly. 
+design pattern to translate a miniJava program into assembly. The flowchart for the project layout is slown below:
 
-* Typechecking
-* Vapor Intermediate Representation (IR) code generation
-* Vapor-M (Vapor-Machine) IR code generation
-* MIPS assembly code generation
+![](pictures/project_layout_flowchart.png)
 
 The typechecking system is responsible for making sure that all types in the user input minJava program is valid, and
 that the compiler during later steps of code generation does not do invalid implicit type conversion. This system is
