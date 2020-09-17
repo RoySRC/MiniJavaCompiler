@@ -65,6 +65,12 @@ section of the final MIPS code. In MIPS assembly we also have to generate the fu
 is done through the function prologue and epilogue before the call to the function.
 
 ## TypeChecking
+In this section we describe the Typechecking system in depth, including the data structures and the layout of the
+symbol table.
+
+### Symbol Table
+The symbol table is the core component of the Typechecking system.
+
 In this homework assignment we build a type check system for the miniJAVA programming language. The input to this
 program is a valid miniJAVA program that parses but does not necessarily type check. The output of this program is
 either "Program type checked successfully" or "Type error". If there is a type error such as assigning an integer to

@@ -69,7 +69,7 @@ public class SymbolTableBuilder {
   private SymTable pass1(Node root) {
     SymbolTableVisitor symbolTableVisitor = new SymbolTableVisitor();
     root.accept(symbolTableVisitor);
-    if (symbolTableVisitor.getErrorStatus() == true) errorStatus = true;
+    if (symbolTableVisitor.getErrorStatus()) errorStatus = true;
     return symbolTableVisitor.getSymbolTable();
   }
 
@@ -82,7 +82,7 @@ public class SymbolTableBuilder {
   private SymTable pass2(SymTable S, Node root) {
     SymbolTableInheritanceVisitor symbolTableInheritanceVisitor = new SymbolTableInheritanceVisitor(S);
     root.accept(symbolTableInheritanceVisitor);
-    if (symbolTableInheritanceVisitor.getErrorStatus() == true) errorStatus = true;
+    if (symbolTableInheritanceVisitor.getErrorStatus()) errorStatus = true;
     return symbolTableInheritanceVisitor.getSymbolTable();
   }
 
@@ -95,7 +95,7 @@ public class SymbolTableBuilder {
     SymbolTableInheritanceTypeCheckVisitor symbolTableInheritanceTypeCheckVisitor;
     symbolTableInheritanceTypeCheckVisitor = new SymbolTableInheritanceTypeCheckVisitor(S);
     root.accept(symbolTableInheritanceTypeCheckVisitor);
-    if (symbolTableInheritanceTypeCheckVisitor.getErrorStatus() == true) errorStatus = true;
+    if (symbolTableInheritanceTypeCheckVisitor.getErrorStatus()) errorStatus = true;
   }
 
   /**
@@ -108,17 +108,17 @@ public class SymbolTableBuilder {
 
     // first pass of the symbol table
     SymTable symbolTablePass1 = pass1(root);
-    if (errorStatus == true)
+    if (errorStatus)
       return null;
 
     // second pass of the symbol table
     SymTable symbolTablePass2 = pass2(symbolTablePass1, root);
-    if (errorStatus == true)
+    if (errorStatus)
       return null;
 
     // The following typechecks the symbol table
     pass3(symbolTablePass2, root);
-    if (errorStatus == true)
+    if (errorStatus)
       return null;
 
 

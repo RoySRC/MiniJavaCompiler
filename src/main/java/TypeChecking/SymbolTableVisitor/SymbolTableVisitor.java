@@ -3,6 +3,7 @@ package TypeChecking.SymbolTableVisitor;
 import TypeChecking.TypeChecking.TypeCheckException;
 import core.syntaxtree.*;
 import core.util.LOGGER;
+import core.visitor.DepthFirstVisitor;
 import core.visitor.Visitor;
 
 import java.util.Enumeration;
@@ -14,7 +15,7 @@ import java.util.Enumeration;
  * symbol table. This class also does a very trivial form of type checking
  */
 
-public class SymbolTableVisitor implements Visitor {
+public class SymbolTableVisitor extends DepthFirstVisitor {
 
   // for logging
   private static final transient LOGGER log = new LOGGER(SymbolTableVisitor.class.getSimpleName(), false);
@@ -27,23 +28,23 @@ public class SymbolTableVisitor implements Visitor {
   }
 
   /**
-   *
-   * @return
+   * Error status getter
+   * @return the current error status
    */
   public boolean getErrorStatus() {
     return this.errorStatus;
   }
 
   /**
-   *
-   * @return
+   * Symbol table getter
+   * @return the current symbol table
    */
   public SymTable getSymbolTable() {
     return this.globalSymbolTable;
   }
 
   /**
-   *
+   * Error status setter
    */
   private void setErrorStatus() {
     this.errorStatus = true;
@@ -98,9 +99,6 @@ public class SymbolTableVisitor implements Visitor {
 
     log.info("Leaving "+n.getClass().getSimpleName());
   }
-
-  @Override
-  public void visit(NodeToken n) { }
 
   /**
    * f0 -> MainClass()
@@ -171,8 +169,6 @@ public class SymbolTableVisitor implements Visitor {
       log.info(log.RED("Current Symbol table: "+globalSymbolTable.getName()));
 
       n.f14.accept(this);// visit the variable declaration
-      if (getErrorStatus()) return;
-      n.f15.accept(this); // visit the statements
       if (getErrorStatus()) return;
 
       // move back to the class symbol table
@@ -335,8 +331,6 @@ public class SymbolTableVisitor implements Visitor {
     if (getErrorStatus()) return;
     log.info("Entered "+n.getClass().getSimpleName());
     try {
-//      n.f2.accept(this); // visit the identifier
-      if (getErrorStatus()) return;
       String identifier = n.f2.f0.tokenImage+"()";
       SymTable symTable = new SymTable(globalSymbolTable, identifier);
       globalSymbolTable.insert(identifier, symTable);
@@ -525,102 +519,6 @@ public class SymbolTableVisitor implements Visitor {
   }
 
   /**
-   * f0 -> Block()
-   *       | AssignmentStatement()
-   *       | ArrayAssignmentStatement()
-   *       | IfStatement()
-   *       | WhileStatement()
-   *       | PrintStatement()
-   */
-  @Override
-  public void visit(Statement n) {
-    if (getErrorStatus()) return;
-    log.info("Entered "+n.getClass().getSimpleName());
-    n.f0.accept(this); // visit each of the statements mentioned in the block comment before this function
-    if (getErrorStatus()) return;
-    log.info("Left "+n.getClass().getSimpleName());
-  }
-
-  /**
-   * f0 -> "{"
-   * f1 -> ( Statement() )*
-   * f2 -> "}"
-   */
-  @Override
-  public void visit(Block n) {
-    if (getErrorStatus()) return;
-    log.info("Entered "+n.getClass().getSimpleName());
-    n.f1.accept(this);
-    if (getErrorStatus()) return;
-    log.info("Left "+n.getClass().getSimpleName());
-  }
-
-  //----------------------------------------------------------------------------
-  // We do not care about expressions when building the symbol table
-  //----------------------------------------------------------------------------
-
-  @Override
-  public void visit(AssignmentStatement n) { }
-
-  @Override
-  public void visit(ArrayAssignmentStatement n) { }
-
-  @Override
-  public void visit(IfStatement n) { }
-
-  @Override
-  public void visit(WhileStatement n) { }
-
-  @Override
-  public void visit(PrintStatement n) { }
-
-  @Override
-  public void visit(Expression n) { }
-
-  @Override
-  public void visit(AndExpression n) { }
-
-  @Override
-  public void visit(CompareExpression n) { }
-
-  @Override
-  public void visit(PlusExpression n) { }
-
-  @Override
-  public void visit(MinusExpression n) { }
-
-  @Override
-  public void visit(TimesExpression n) { }
-
-  @Override
-  public void visit(ArrayLookup n) { }
-
-  @Override
-  public void visit(ArrayLength n) { }
-
-  @Override
-  public void visit(MessageSend n) { }
-
-  @Override
-  public void visit(ExpressionList n) { }
-
-  @Override
-  public void visit(ExpressionRest n) { }
-
-
-  @Override
-  public void visit(PrimaryExpression n) { }
-
-  @Override
-  public void visit(IntegerLiteral n) { }
-
-  @Override
-  public void visit(TrueLiteral n) { }
-
-  @Override
-  public void visit(FalseLiteral n) { }
-
-  /**
    * f0 -> <IDENTIFIER>
    */
   @Override
@@ -629,7 +527,7 @@ public class SymbolTableVisitor implements Visitor {
     log.info("Entered "+n.getClass().getSimpleName());
     try {
       log.info("Creating symbol table with identifier: "+n.f0.tokenImage);
-      // Put the identifier in a different symbol table, and put the new symbol table as an entry in the current
+      // Put the identifier in a different symbol table, and put this new symbol table as an entry in the current
       // symbol table
       String identifier = n.f0.tokenImage;
       SymTable symTable = new SymTable(globalSymbolTable, identifier);
@@ -647,28 +545,4 @@ public class SymbolTableVisitor implements Visitor {
     log.info("Left "+n.getClass().getSimpleName());
   }
 
-  @Override
-  public void visit(ThisExpression n) {
-
-  }
-
-  @Override
-  public void visit(ArrayAllocationExpression n) {
-
-  }
-
-  @Override
-  public void visit(AllocationExpression n) {
-
-  }
-
-  @Override
-  public void visit(NotExpression n) {
-
-  }
-
-  @Override
-  public void visit(BracketExpression n) {
-
-  }
 }
