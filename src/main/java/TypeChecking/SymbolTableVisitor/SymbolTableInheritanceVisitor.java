@@ -17,7 +17,7 @@ public class SymbolTableInheritanceVisitor extends DepthFirstVisitor {
   // for logging
   private static final transient LOGGER log = new LOGGER(SymbolTableInheritanceVisitor.class.getSimpleName());
 
-  private SymTable globalSymbolTable = null;
+  private final SymTable globalSymbolTable;
   private boolean errorStatus = false;
 
   public SymbolTableInheritanceVisitor(SymTable initialSymbolTable) {
@@ -30,7 +30,7 @@ public class SymbolTableInheritanceVisitor extends DepthFirstVisitor {
 
   /**
    *
-   * @return
+   * @return boolean indicating if an error has occurred
    */
   public boolean getErrorStatus() {
     return this.errorStatus;
@@ -72,7 +72,6 @@ public class SymbolTableInheritanceVisitor extends DepthFirstVisitor {
     // other classes, i.e. we want to add a class to the symbol table for child classes.
     if (n.f0.choice instanceof ClassExtendsDeclaration) {
       n.f0.accept(this);
-      if (getErrorStatus()) return;
     }
   }
 

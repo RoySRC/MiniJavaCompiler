@@ -1,8 +1,8 @@
 package TypeChecking.PrettyPrintVisitor;
 
 import core.syntaxtree.*;
-import core.util.LOGGER;
 import core.visitor.Visitor;
+
 import java.util.Enumeration;
 
 /**
@@ -12,18 +12,7 @@ import java.util.Enumeration;
  */
 public class PrettyPrintVisitor implements Visitor {
 
-  private TreeStructure treeStructure = new TreeStructure();
-
-  // for logging
-  private static final LOGGER log = new LOGGER(PrettyPrintVisitor.class.getSimpleName());
-
-  /**
-   * Get the tree structure built by this class
-   * @return
-   */
-  public TreeStructure getTreeStructure() {
-    return treeStructure;
-  }
+  private final TreeStructure treeStructure = new TreeStructure();
 
   public void print() {
     this.treeStructure.print();

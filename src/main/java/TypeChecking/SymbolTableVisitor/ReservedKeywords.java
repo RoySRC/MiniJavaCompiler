@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class ReservedKeywords {
 
-  private static Set<String> reservedWords = new HashSet<String>(){{
+  private static final Set<String> reservedWords = new HashSet<String>(){{
     add("int");
     add("int[]");
     add("boolean");

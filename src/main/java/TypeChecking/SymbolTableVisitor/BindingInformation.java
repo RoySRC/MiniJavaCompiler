@@ -14,7 +14,7 @@ public class BindingInformation {
    * type of that variable. If the current symbol is a class, then this field contains 'class'. If the current symbol
    * is a function, then this field contains the return type of the function.
    */
-  private Type type;
+  private final Type type;
 
   /**
    * identifies whether or not the current symbol is a parameter

@@ -2,7 +2,6 @@ package TypeChecking.SymbolTableVisitor;
 
 import core.syntaxtree.Node;
 import core.util.LOGGER;
-
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -12,7 +11,7 @@ public class SymbolTableBuilder {
   private static final transient LOGGER log = new LOGGER(SymbolTableBuilder.class.getSimpleName());
 
   private boolean errorStatus = false;
-  private SymTable symbolTable = null;
+  private SymTable symbolTable;
 
   /**
    *

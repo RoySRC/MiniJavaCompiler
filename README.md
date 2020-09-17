@@ -68,9 +68,9 @@ is done through the function prologue and epilogue before the call to the functi
 In order to help us with type checking and translating the high level object-oriented miniJava program into Vapor IR
 code, we have decided to write a series of helper packages for visualization of the control flow in the abstract
 syntax tree (AST) nodes. We only need to write the visualizer for the initial type checking system and the conversion
-to Vapor IR. Vapor IR and Vapor-M IR code does not have as complex of an AST structure as the equivalent miniJava
-program. We call this miniJava AST visualizer, the Pretty Print Visitor. The stdout of this package is best
-illustrated through the following code block and its visualized AST.
+to Vapor IR. Both of these systems take in as input a miniJava program. Vapor IR and Vapor-M IR code does not have as
+complex of an AST structure as the equivalent miniJava program. We call this miniJava AST visualizer, the Pretty
+Print Visitor. The stdout of this package is best illustrated through the following code block and its visualized AST.
 ```java
 class Factorial{
     public static void main(String[] a){

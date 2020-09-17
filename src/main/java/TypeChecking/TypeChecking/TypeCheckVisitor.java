@@ -15,27 +15,28 @@ public class TypeCheckVisitor extends DepthFirstVisitor {
   // for logging
   private static final transient LOGGER log = new LOGGER(TypeCheckVisitor.class.getSimpleName());
 
-  class Function {
-    SymTable s;
-    int parameterCount;
-
-    void decrementParameterCount() {
-      log.info("Decrementing parameter count for function: "+s.getName());
-      parameterCount -= 1;
-      log.info("Final remaining number of parameters: "+parameterCount);
-    }
-    void incrementParameterCount() {
-      log.info("Incrementing parameter count for function: "+s.getName());
-      parameterCount += 1;
-      log.info("Final remaining number of parameters: "+parameterCount);
-    }
-  }
-
   private SymTable symbolTable;
   private final ArrayList<Function> tempSymbolTablePtr = new ArrayList<>();
   private boolean errorStatus = false;
   private final SymTable rootSymbolTable;
   private String globalType = "";
+
+  static class Function {
+    SymTable s;
+    int parameterCount;
+
+    void decrementParameterCount() {
+      log.info("Decrementing parameter count for function: " + s.getName());
+      parameterCount -= 1;
+      log.info("Final remaining number of parameters: " + parameterCount);
+    }
+
+    void incrementParameterCount() {
+      log.info("Incrementing parameter count for function: " + s.getName());
+      parameterCount += 1;
+      log.info("Final remaining number of parameters: " + parameterCount);
+    }
+  }
 
   /**
    *
@@ -360,8 +361,10 @@ public class TypeCheckVisitor extends DepthFirstVisitor {
         log.info(log.RED("New type: "+type));
         boolean found = false;
         for (String id : rootSymbolTable.getChildren().keySet()) {
-          if (id.equals(type))
+          if (id.equals(type)) {
             found = true;
+            break;
+          }
         }
 
         if (!found) {
@@ -676,9 +679,6 @@ public class TypeCheckVisitor extends DepthFirstVisitor {
 
       if (!globalType.equals("boolean"))
         throw new TypeCheckException("RHS did not evaluate to boolean, but got "+globalType);
-
-      if (!lhsType.equals(globalType))
-        throw new TypeCheckException("LHS and RHS type should be boolean, received: "+lhsType+" and "+globalType);
 
       setGlobalType("boolean");
 
@@ -1282,8 +1282,8 @@ public class TypeCheckVisitor extends DepthFirstVisitor {
     }
 
     // Get the parent classes of arg1 and arg2
-    s1 = (s1 == null) ? null : s1.getParentClass();
-    s2 = (s2 == null) ? null : s2.getParentClass();
+    s1 = s1.getParentClass();
+    s2 = s2.getParentClass();
 
     log.info("Parent of "+arg1+": "+s1);
     log.info("Parent of "+arg2+": "+s2);

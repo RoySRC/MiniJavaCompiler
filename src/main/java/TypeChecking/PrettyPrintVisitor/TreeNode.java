@@ -1,16 +1,13 @@
 package TypeChecking.PrettyPrintVisitor;
 
 import core.syntaxtree.Node;
-import core.util.LOGGER;
-import java.util.*;
+
+import java.util.ArrayList;
 
 /**
  * This class contains the tree nodes associated with a tree structure.
  */
 public class TreeNode {
-  // for logging
-  private static final LOGGER log = new LOGGER(TreeNode.class.getSimpleName(), true);
-
   private TreeNode parent;
   private Node node;
   private ArrayList<TreeNode> children;

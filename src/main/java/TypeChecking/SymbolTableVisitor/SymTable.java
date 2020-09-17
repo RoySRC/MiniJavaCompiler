@@ -26,7 +26,7 @@ public class SymTable {
   private final SymTable parent;
 
   // Each symbol in the symbol table needs to have a set of binding information
-  private Map<String, BindingInformation>  childrenBindingInformation = null;
+  private Map<String, BindingInformation>  childrenBindingInformation;
 
   // The depth of the current symbol table in the symbol table tree
   private final int depth;

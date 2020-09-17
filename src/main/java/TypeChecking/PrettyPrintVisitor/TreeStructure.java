@@ -2,7 +2,6 @@ package TypeChecking.PrettyPrintVisitor;
 
 import core.syntaxtree.Node;
 import core.syntaxtree.NodeToken;
-import core.util.LOGGER;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -13,11 +12,8 @@ import java.util.Iterator;
  */
 public class TreeStructure {
 
-  // for logging
-  private static final LOGGER log = new LOGGER(TreeStructure.class.getSimpleName(), true);
-
   // stores a pointer to the current node at given depth
-  private HashMap<Integer, TreeNode> nodeDepthPointer = new HashMap<>();
+  private final HashMap<Integer, TreeNode> nodeDepthPointer = new HashMap<>();
   private TreeNode tree = null;
   private int depth = -1;
 
