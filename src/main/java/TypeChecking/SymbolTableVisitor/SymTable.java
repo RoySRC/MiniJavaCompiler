@@ -20,19 +20,19 @@ public class SymTable {
   private static final LOGGER log = new LOGGER(SymTable.class.getSimpleName(), true);
 
   // Children of the current symbol table by identifier
-  private Map<String, SymTable> children = null;
+  private final Map<String, SymTable> children;
 
   // Parent of the current symbol table
-  private SymTable parent = null;
+  private final SymTable parent;
 
   // Each symbol in the symbol table needs to have a set of binding information
   private Map<String, BindingInformation>  childrenBindingInformation = null;
 
   // The depth of the current symbol table in the symbol table tree
-  private int depth = 0;
+  private final int depth;
 
   // Give the current symbol table a name
-  private String name = null;
+  private final String name;
 
   // Get the last inserted symbol in the children of the current symbol table.
   private String lastInsertedSymbol = null;
@@ -58,18 +58,18 @@ public class SymTable {
    * Print the current symbol table and not its children
    */
   public void print() {
-    System.out.printf("\u001B[47m\u001B[30m");
+    System.out.print("\u001B[47m\u001B[30m");
     System.out.printf("%-32s", this.name);
     System.out.println(" \u001B[0m");
 
-    System.out.printf("\u001b[4m"); // underline
+    System.out.print("\u001b[4m"); // underline
     System.out.printf("%-15s │%-15s ", "ID", "TYPE");
     System.out.println("\u001B[0m");
 
     int i=0, j=this.children.size();
     for (String id : this.children.keySet()) {
       if (i == j-1)
-        System.out.printf("\u001b[4m");
+        System.out.print("\u001b[4m");
 
       String typeName = ((NodeToken)(this.childrenBindingInformation.get(id).getType().f0.choice)).tokenImage;
       boolean typeScope = this.childrenBindingInformation.get(id).isParam();
@@ -389,7 +389,7 @@ public class SymTable {
 
   /**
    * If the symbol table is a function, get the number of parameters
-   * @return
+   * @return integer representing the number of parameters of the function symbol table
    */
   public int getNumPrams() {
     int rv = 0;

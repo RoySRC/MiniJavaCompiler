@@ -31,15 +31,15 @@ public class TypeCheckVisitor extends DepthFirstVisitor {
     }
   }
 
-  private SymTable symbolTable = null;
-  private ArrayList<Function> tempSymbolTablePtr = new ArrayList<>();
+  private SymTable symbolTable;
+  private final ArrayList<Function> tempSymbolTablePtr = new ArrayList<>();
   private boolean errorStatus = false;
   private final SymTable rootSymbolTable;
   private String globalType = "";
 
   /**
    *
-   * @param s
+   * @param s The symbol table of the minijava program
    */
   public TypeCheckVisitor(SymTable s) {
     this.symbolTable = s;
@@ -360,7 +360,7 @@ public class TypeCheckVisitor extends DepthFirstVisitor {
         log.info(log.RED("New type: "+type));
         boolean found = false;
         for (String id : rootSymbolTable.getChildren().keySet()) {
-          if (id == type)
+          if (id.equals(type))
             found = true;
         }
 
@@ -444,10 +444,7 @@ public class TypeCheckVisitor extends DepthFirstVisitor {
   @Override
   public void visit(Block n) {
     if (getErrorStatus()) return;
-    log.info("Entered "+n.getClass().getSimpleName());
     n.f1.accept(this);
-    if (getErrorStatus()) return;
-    log.info("Left "+n.getClass().getSimpleName());
   }
 
   /**
@@ -512,7 +509,7 @@ public class TypeCheckVisitor extends DepthFirstVisitor {
       // Get the type of LHS
       BindingInformation binding = symbolTable.lookup(n.f0.f0.tokenImage);
       String lhsType = ((NodeToken)binding.getType().f0.choice).tokenImage;
-      if (lhsType == "int[]") lhsType = "int";
+      if (lhsType.equals("int[]")) lhsType = "int";
 
       log.info("Type of LHS: "+lhsType);
 
@@ -1163,7 +1160,7 @@ public class TypeCheckVisitor extends DepthFirstVisitor {
     if (getErrorStatus()) return;
     log.info("Entered "+n.getClass().getSimpleName()+": "+n.f0.tokenImage);
     // Get the type of keyword: this
-    SymTable s = null;
+    SymTable s;
     for (s = symbolTable; s.getParent().getParent() != null; s = s.getParent()) ;
 
     setGlobalType(s.getName());

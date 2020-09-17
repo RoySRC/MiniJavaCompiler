@@ -64,6 +64,194 @@ MIPS emulator. Unlike the vapor intermediate representations, the MIPS assembly 
 section of the final MIPS code. In MIPS assembly we also have to generate the function call stack manually. This
 is done through the function prologue and epilogue before the call to the function.
 
+## Helper Packages
+In order to help us with type checking and translating the high level object-oriented miniJava program into Vapor IR
+code, we have decided to write a series of helper packages for visualization of the control flow in the abstract
+syntax tree (AST) nodes. We only need to write the visualizer for the initial type checking system and the conversion
+to Vapor IR. Vapor IR and Vapor-M IR code does not have as complex of an AST structure as the equivalent miniJava
+program. We call this miniJava AST visualizer, the Pretty Print Visitor. The stdout of this package is best
+illustrated through the following code block and its visualized AST.
+```java
+class Factorial{
+    public static void main(String[] a){
+        System.out.println(new Fac().ComputeFac(10));
+    }
+}
+
+class Fac {
+    public int ComputeFac(int num){
+        int num_aux ;
+        if (num < 1)
+            num_aux = 1 ;
+        else
+            num_aux = num * (this.ComputeFac(num-1)) ;
+        return num_aux ;
+    }
+}
+```
+The AST visualization of the above code block is illustrated below:
+```
+Goal
+├─ MainClass
+│   ├─ NodeToken →  "class"
+│   ├─ Identifier
+│   │   └─ NodeToken →  "Factorial"
+│   ├─ NodeToken →  "{"
+│   ├─ NodeToken →  "public"
+│   ├─ NodeToken →  "static"
+│   ├─ NodeToken →  "void"
+│   ├─ NodeToken →  "main"
+│   ├─ NodeToken →  "("
+│   ├─ NodeToken →  "String"
+│   ├─ NodeToken →  "["
+│   ├─ NodeToken →  "]"
+│   ├─ Identifier
+│   │   └─ NodeToken →  "a"
+│   ├─ NodeToken →  ")"
+│   ├─ NodeToken →  "{"
+│   ├─ NodeListOptional
+│   ├─ NodeListOptional
+│   │   └─ Statement
+│   │       └─ PrintStatement
+│   │           ├─ NodeToken →  "System.out.println"
+│   │           ├─ NodeToken →  "("
+│   │           ├─ Expression
+│   │           │   └─ MessageSend
+│   │           │       ├─ PrimaryExpression
+│   │           │       │   └─ AllocationExpression
+│   │           │       │       ├─ NodeToken →  "new"
+│   │           │       │       ├─ Identifier
+│   │           │       │       │   └─ NodeToken →  "Fac"
+│   │           │       │       ├─ NodeToken →  "("
+│   │           │       │       └─ NodeToken →  ")"
+│   │           │       ├─ NodeToken →  "."
+│   │           │       ├─ Identifier
+│   │           │       │   └─ NodeToken →  "ComputeFac"
+│   │           │       ├─ NodeToken →  "("
+│   │           │       ├─ NodeOptional
+│   │           │       │   └─ ExpressionList
+│   │           │       │       ├─ Expression
+│   │           │       │       │   └─ PrimaryExpression
+│   │           │       │       │       └─ IntegerLiteral
+│   │           │       │       │           └─ NodeToken →  "10"
+│   │           │       │       └─ NodeListOptional
+│   │           │       └─ NodeToken →  ")"
+│   │           ├─ NodeToken →  ")"
+│   │           └─ NodeToken →  ";"
+│   ├─ NodeToken →  "}"
+│   └─ NodeToken →  "}"
+├─ NodeListOptional
+│   └─ TypeDeclaration
+│       └─ ClassDeclaration
+│           ├─ NodeToken →  "class"
+│           ├─ Identifier
+│           │   └─ NodeToken →  "Fac"
+│           ├─ NodeToken →  "{"
+│           ├─ NodeListOptional
+│           ├─ NodeListOptional
+│           │   └─ MethodDeclaration
+│           │       ├─ NodeToken →  "public"
+│           │       ├─ Type
+│           │       │   └─ IntegerType
+│           │       │       └─ NodeToken →  "int"
+│           │       ├─ Identifier
+│           │       │   └─ NodeToken →  "ComputeFac"
+│           │       ├─ NodeToken →  "("
+│           │       ├─ NodeOptional
+│           │       │   └─ FormalParameterList
+│           │       │       ├─ FormalParameter
+│           │       │       │   ├─ Type
+│           │       │       │   │   └─ IntegerType
+│           │       │       │   │       └─ NodeToken →  "int"
+│           │       │       │   └─ Identifier
+│           │       │       │       └─ NodeToken →  "num"
+│           │       │       └─ NodeListOptional
+│           │       ├─ NodeToken →  ")"
+│           │       ├─ NodeToken →  "{"
+│           │       ├─ NodeListOptional
+│           │       │   └─ VarDeclaration
+│           │       │       ├─ Type
+│           │       │       │   └─ IntegerType
+│           │       │       │       └─ NodeToken →  "int"
+│           │       │       ├─ Identifier
+│           │       │       │   └─ NodeToken →  "num_aux"
+│           │       │       └─ NodeToken →  ";"
+│           │       ├─ NodeListOptional
+│           │       │   └─ Statement
+│           │       │       └─ IfStatement
+│           │       │           ├─ NodeToken →  "if"
+│           │       │           ├─ NodeToken →  "("
+│           │       │           ├─ Expression
+│           │       │           │   └─ CompareExpression
+│           │       │           │       ├─ PrimaryExpression
+│           │       │           │       │   └─ Identifier
+│           │       │           │       │       └─ NodeToken →  "num"
+│           │       │           │       ├─ NodeToken →  "<"
+│           │       │           │       └─ PrimaryExpression
+│           │       │           │           └─ IntegerLiteral
+│           │       │           │               └─ NodeToken →  "1"
+│           │       │           ├─ NodeToken →  ")"
+│           │       │           ├─ Statement
+│           │       │           │   └─ AssignmentStatement
+│           │       │           │       ├─ Identifier
+│           │       │           │       │   └─ NodeToken →  "num_aux"
+│           │       │           │       ├─ NodeToken →  "="
+│           │       │           │       ├─ Expression
+│           │       │           │       │   └─ PrimaryExpression
+│           │       │           │       │       └─ IntegerLiteral
+│           │       │           │       │           └─ NodeToken →  "1"
+│           │       │           │       └─ NodeToken →  ";"
+│           │       │           ├─ NodeToken →  "else"
+│           │       │           └─ Statement
+│           │       │               └─ AssignmentStatement
+│           │       │                   ├─ Identifier
+│           │       │                   │   └─ NodeToken →  "num_aux"
+│           │       │                   ├─ NodeToken →  "="
+│           │       │                   ├─ Expression
+│           │       │                   │   └─ TimesExpression
+│           │       │                   │       ├─ PrimaryExpression
+│           │       │                   │       │   └─ Identifier
+│           │       │                   │       │       └─ NodeToken →  "num"
+│           │       │                   │       ├─ NodeToken →  "*"
+│           │       │                   │       └─ PrimaryExpression
+│           │       │                   │           └─ BracketExpression
+│           │       │                   │               ├─ NodeToken →  "("
+│           │       │                   │               ├─ Expression
+│           │       │                   │               │   └─ MessageSend
+│           │       │                   │               │       ├─ PrimaryExpression
+│           │       │                   │               │       │   └─ ThisExpression
+│           │       │                   │               │       │       └─ NodeToken →  "this"
+│           │       │                   │               │       ├─ NodeToken →  "."
+│           │       │                   │               │       ├─ Identifier
+│           │       │                   │               │       │   └─ NodeToken →  "ComputeFac"
+│           │       │                   │               │       ├─ NodeToken →  "("
+│           │       │                   │               │       ├─ NodeOptional
+│           │       │                   │               │       │   └─ ExpressionList
+│           │       │                   │               │       │       ├─ Expression
+│           │       │                   │               │       │       │   └─ MinusExpression
+│           │       │                   │               │       │       │       ├─ PrimaryExpression
+│           │       │                   │               │       │       │       │   └─ Identifier
+│           │       │                   │               │       │       │       │       └─ NodeToken →  "num"
+│           │       │                   │               │       │       │       ├─ NodeToken →  "-"
+│           │       │                   │               │       │       │       └─ PrimaryExpression
+│           │       │                   │               │       │       │           └─ IntegerLiteral
+│           │       │                   │               │       │       │               └─ NodeToken →  "1"
+│           │       │                   │               │       │       └─ NodeListOptional
+│           │       │                   │               │       └─ NodeToken →  ")"
+│           │       │                   │               └─ NodeToken →  ")"
+│           │       │                   └─ NodeToken →  ";"
+│           │       ├─ NodeToken →  "return"
+│           │       ├─ Expression
+│           │       │   └─ PrimaryExpression
+│           │       │       └─ Identifier
+│           │       │           └─ NodeToken →  "num_aux"
+│           │       ├─ NodeToken →  ";"
+│           │       └─ NodeToken →  "}"
+│           └─ NodeToken →  "}"
+└─ NodeToken →  ""
+```
+
+
 ## TypeChecking
 In this section we describe the Typechecking system in depth, including the data structures and the layout of the
 symbol table.
@@ -81,10 +269,6 @@ hierarchical symbol table tree data structure. In addition to building the tree 
 for duplicate declaration of identifiers. If a duplicate declaration of an identifier is found, an error will be
 thrown. We illustrate this first pass with the following code example:
 ```c++
-/**
- * This class typechecks
- */
-
 class A {
   public static void main(String[] args) {
     B b;
