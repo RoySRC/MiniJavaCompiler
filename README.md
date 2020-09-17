@@ -36,7 +36,29 @@ implicit type casting and function overriding. To accomplish the generation of V
 symbol table that is different from the symbol table in the Typechecking system. The difference in the symbol table
 is in the binding information of the symbols. The binding information of symbols in this symbol table contains three
 fields: type name, offset, and scope as opposed to two fields in the Typechecking system. This module is also
-responsible for creating the memory layout of the user input miniJava program.
+responsible for creating the memory layout of the user input miniJava program. Advantages of incremental lowering to
+Vapor IR is that it is closer to assembly, but still does not fully impose the constraints of writing code in
+assembly. The constraints of writing code in assembly include limited number of registers, having to setup the
+function call stack manually, and writing additional code to retrieve return values from functions. 
+
+The Vapor-M IR code generation system is responsible for generating the Vapor-M translation of the code generated
+from the Vapor IR code generation system. Vapor-M code is closer to MIPS assembly than Vapor. As a result, all of the
+limitations of assembly is imposed on code written in Vapor-M. To deal with the issue of limited number of registers
+we use the linear scan register allocation algorithm for optimal register allocation. The MIPS assembly has a set of
+23 registers, these are `$a0, …, $a3`, `$s0, …, $s7`, `$t0, …, $t8`, and `$v0, $v1`. The `$a` registers are for
+argument passing during function calls. If a function takes in more than four arguments, the `in/out` space in the
+stack is used. For convenience in storing temporary result of calculations, we have a set of three reserved registers
+: `$s6, $s7, $v1`. To get the return value of a function we use `$v0` register. All other registers are used in the
+optimal register allocation algorithm. The function call stack is generated after analyzing the parameter list of
+the function to be called. For instance if a function takes more than four arguments, then additional stack frames
+are allocated for passing additional arguments. If the return from a function is void, then there is no additional code
+generated to read or clean the return register: `$v0`. The signature to declare a function in Vapor-M is: ` func Main
+[in 0, out 0, local 17]`. Here, `in` and `out` represents the number of in and out stack frames. If a function
+wants to call another function with more than four arguments, then the additional argument values are written to the
+out stack of the caller function and when control goes to the callee function, these additional arguments are read
+from the `in` stack. The `local` represents the number of variables in the current function whose value resides in
+the function local stack. These are generally values for variables that have been spilled by the register allocation
+algorithm.
 
 
 
