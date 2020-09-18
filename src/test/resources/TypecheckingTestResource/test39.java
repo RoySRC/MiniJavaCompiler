@@ -9,7 +9,7 @@ class A {
 // TE: the following three classes are in a circular inheritance
 
 
-class B extends B {
+class B extends C {
 
 }
 

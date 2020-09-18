@@ -1662,8 +1662,8 @@ public class FunctionVisitor extends GJDepthFirst<String, String> {
   /**
    * The following function will always try to cast @arg2 to @arg1 as in the expression: @arg1 = @arg2. It will throw
    * an exception if the cast fails, it will throw an {@link TypeCheckException}
-   * @param arg1
-   * @param arg2
+   * @param arg1 type of the first argument
+   * @param arg2 type of the second argument
    */
   public void tryCasting(String arg1, String arg2) throws TypeCheckException {
     log.info("Entered tryCasting() function.");

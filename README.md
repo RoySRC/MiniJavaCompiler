@@ -347,48 +347,78 @@ Once the symbol table passes this final pass, it is then used by the Typecheck v
 checking.
 
 ### Typecheck Visitor
-
-
-
-
-
-
-
-
-
-
-This assignment also deals with checking for implicit type casting. For instance if we have two classes: class A
-and C, and A extends C, then the following program should type check:
+This is the visitor that is responsible for performing more fine grained type checks. These checks include checking
+if the conditional in `if`, `for`, and `while` loop evaluates to a Boolean expression. There are also checks
+performed in assignment statements that makes sure the types on the left-hand side and the types on the right-hand
+side are equal. Type checking is done through a global variable that stores the type of the most recently visited
+expression. The following code block illustrates an example:
 ```
-class Main {
-  public static void main(String[] args) {
-    A a ;
-    C c;
-    int v;
-    a = new A();
-    c = new C();
-    c = a;   // a has been implicitly type casted to C
-    v = a.init((new A())); // a will be implicitly type casted to C
-    System.out.println(v); //10
-    v = a.init(new C());
-    System.out.println(v); //10
+class HelloWorld {
+  public static void main(String[] a) {
+    System.out.println(12+21);
   }
 }
-
-class A extends C {
-    public int init(C c) {
-        return 10;
-    }
-}
-
-class C {
-    public int init(int a) {
-        return 12;
-    }
-}
 ```
-In addition to checking for implicit typecasts, the program also checks for circular inheritance. If a circular
-inheritance is detected, the program prints "Type error".
+The AST for the part that we care about is as follows. The part that needs type checking in the above code block is
+the print statement.
+```
+│   ├─ NodeListOptional
+│   │   └─ Statement
+│   │       └─ PrintStatement
+│   │           ├─ NodeToken →  "System.out.println"
+│   │           ├─ NodeToken →  "("
+│   │           ├─ Expression
+│   │           │   └─ PlusExpression
+│   │           │       ├─ PrimaryExpression
+│   │           │       │   └─ IntegerLiteral
+│   │           │       │       └─ NodeToken →  "12"
+│   │           │       ├─ NodeToken →  "+"
+│   │           │       └─ PrimaryExpression
+│   │           │           └─ IntegerLiteral
+│   │           │               └─ NodeToken →  "21"
+│   │           ├─ NodeToken →  ")"
+│   │           └─ NodeToken →  ";"
+```
+From the above AST, when we visit the `PlusExpression` and eventually make our way down to the first `IntegerLiteral
+` node, we set the global type to `int`. After visiting the first `IntegerLiteral` node we backtrack to the
+`PlusExperssion`, and visit the second `IntegerLiteral` node and backtrack our way back to the `PlusExpression` again
+. We then check to make sure that the global type after the visit to the first child node is equal to the global type
+after the visit to the second child node of the sub-AST rooted at `PlusExpression`. If both of these types are equal
+, then the `PlusExpression` type checks, and the global type is set to `int`. After the `PlusExpression`, control
+returns to the `PrintStatement`, where the global type is checked again. If the global type at this point is an `int
+`, then the `PrintStatement` type checks. Since the program had only one statement and that statement type checks
+, therefore, the program type checks. A miniJava program type checks if all of its statements type check. This
+process of checking if a statement type checks applies to all statements.
+
+This visitor is also responsible for type checking through implicit typecasting especially during the case of
+inheritance and function overriding. If there are multiple overridden functions, this visitor determines which
+function to type check against by comparing the parameter list in the function call to the parameter list of all the
+functions that have the same name in the current, inherited, and parent scopes. The typecasting algorithm is
+illustrated below. The following algorithm tries to typecast `arg2` into `arg1`:
+```
+Input: arg1, arg2, symbol_table
+Output: None if the typecasting was successful, casting error otherwise
+S1 = symbol_table.get_symbol_table(arg1) 		# get the symbol table for argument 1
+S2 = symbol_table.get_symbol_table(arg2)		# get the symbol table for argument 2
+If S1 is NULL or S1 is a reserved keyword or S2 is NULL or S2 is a reserved keyword
+	Throw Exception (“Cannot cast reserved types”)
+S2 = getInheritedParent(S2)				# get the parent class that S2 inherits from
+If S2 does not have an inherited parent
+	Throw Exception (“No possible way to cast arg2 to arg1”)
+If type of S2 does not equal type of arg1
+	Throw Exception (“No possible way to cast arg2 to arg1”)
+```
+The above algorithm will only run if the types of `arg1` and `arg2` are unequal.
+
+This visitor also makes checks to make sure that the variables that are used in a statement have been defined
+previously either in the current scope or in the parent scopes. This is done by scanning the symbol table in two
+directions - upwards and sideways. sideways scans are performed when a class inherits from another class. Upward
+scans are always performed to find variable declarations. For instance if the visitor is working with a function
+symbol table and it encounters a symbol that is not found in the current function symbol table, then an upward scan
+is performed on the class containing the function. If the symbol is not found in the class scope, then sideways scans
+are performed to search for the symbol in the parent inherited classes. If  the variable is encountered in a scope
+that is closer to the current statement being type checked, then the type of that variable is used in the type
+checking process.
 
 ## Vapor IR
 For this assignment, we built a vapor translator for the miniJAVA programming language. The vapor programming language is one level closer to the MIPS assembly than miniJAVA. In the vapor programming language, the stack is managed by the vapor interpreter. Also, in this programming language there is an infinite number of registers. This program visits every node in the miniJAVA Abstract Syntax Tree (AST), and translates it to its vapor representation. 

@@ -1263,8 +1263,8 @@ public class TypeCheckVisitor extends DepthFirstVisitor {
   /**
    * The following function will always try to cast @arg2 to @arg1 as in the expression: @arg1 = @arg2. It will throw
    * an exception if the cast fails, it will throw an {@link TypeCheckException}
-   * @param arg1
-   * @param arg2
+   * @param arg1 type of the first argument
+   * @param arg2 type of the second argument
    */
   public void tryCasting(String arg1, String arg2) throws TypeCheckException {
     log.info("Entered tryCasting() function.");
@@ -1282,25 +1282,17 @@ public class TypeCheckVisitor extends DepthFirstVisitor {
     }
 
     // Get the parent classes of arg1 and arg2
-    s1 = s1.getParentClass();
     s2 = s2.getParentClass();
-
-    log.info("Parent of "+arg1+": "+s1);
     log.info("Parent of "+arg2+": "+s2);
 
-    if (s1 == null && s2 == null)
+    if (s2 == null) // there is no possible way to cast arg2 to arg1
       throw new TypeCheckException("Argument type mismatch: "+arg1+", "+arg2);
 
     // check to see if arg2 can be cast to arg1
-    if (s2 != null)
-      if (!s2.getName().equals(arg1))
-        throw new TypeCheckException("Argument type mismatch: "+arg1+", "+arg2);
-      else
-        log.info(arg2+" has been implicitly type casted to "+arg1);
-    else {
-      log.error(arg2 + " cannot be type casted to anything.");
-      throw new TypeCheckException(arg2+" cannot be type casted to anything.");
-    }
+    if (!s2.getName().equals(arg1))
+      throw new TypeCheckException("Argument type mismatch: "+arg1+", "+arg2);
+    else
+      log.info(arg2+" has been implicitly type casted to "+arg1);
 
     log.info("Left tryCasting() function.");
   }
