@@ -37,11 +37,12 @@ responsible for creating the memory layout of the user input miniJava program. A
 Vapor IR is that it is closer to assembly, but still does not fully impose the constraints of writing code in
 assembly. The constraints of writing code in assembly include limited number of registers, having to setup the
 function call stack manually, and writing additional code to retrieve return values from functions. 
+
 The Vapor-M IR code generation system is responsible for generating the Vapor-M translation of the code generated
 from the Vapor IR code generation system. Vapor-M code is closer to MIPS assembly than Vapor. As a result, all of the
 limitations of assembly is imposed on code written in Vapor-M. To deal with the issue of limited number of registers
 we use the linear scan register allocation algorithm for optimal register allocation. The MIPS assembly has a set of
-23 registers, these are `$a0, …, $a3`, `$s0, …, $s7`, `$t0, …, $t8`, and `$v0, $v1`. The `$a` registers are for
+23 registers, these are `$a0, ..., $a3`, `$s0, ..., $s7`, `$t0, ..., $t8`, and `$v0, $v1`. The `$a` registers are for
 argument passing during function calls. If a function takes in more than four arguments, the `in/out` space in the
 stack is used. For convenience in storing temporary result of calculations, we have a set of three reserved registers
 : `$s6, $s7, $v1`. To get the return value of a function we use `$v0` register. All other registers are used in the
