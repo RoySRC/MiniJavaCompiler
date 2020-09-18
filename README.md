@@ -37,7 +37,6 @@ responsible for creating the memory layout of the user input miniJava program. A
 Vapor IR is that it is closer to assembly, but still does not fully impose the constraints of writing code in
 assembly. The constraints of writing code in assembly include limited number of registers, having to setup the
 function call stack manually, and writing additional code to retrieve return values from functions. 
-
 The Vapor-M IR code generation system is responsible for generating the Vapor-M translation of the code generated
 from the Vapor IR code generation system. Vapor-M code is closer to MIPS assembly than Vapor. As a result, all of the
 limitations of assembly is imposed on code written in Vapor-M. To deal with the issue of limited number of registers
@@ -250,7 +249,11 @@ Goal
 │           └─ NodeToken →  "}"
 └─ NodeToken →  ""
 ```
-
+From the above visualization it can be seen that `Goal` is the entry point into the AST nodes and also `Goal` is the
+root of the AST. In this specific example, the `Goal` node has two child nodes – the root of the AST node for the
+main class, and the root node of the AST of the `Fac` class. In general, there can be more than one class other than
+the main class in a miniJava program. All of these classes will have their own AST, and the root nodes of these ASTs
+will be the child of the `Goal` node.
 
 ## TypeChecking
 In this section we describe the Typechecking system in depth, including the data structures and the layout of the
