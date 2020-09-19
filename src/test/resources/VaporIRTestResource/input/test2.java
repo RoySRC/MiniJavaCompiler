@@ -1,5 +1,5 @@
 class A {
-  public static void main(String[] a) {
+  public static void main(String[] k) {
     int[] a;
     int j;
     j = 89;

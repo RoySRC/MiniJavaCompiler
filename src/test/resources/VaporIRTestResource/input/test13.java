@@ -1,5 +1,5 @@
 class test13 {
-  public static void main(String[] a) {
+  public static void main(String[] k) {
     A a;
     a = new A();
     System.out.println((a.getB()).setValue(12)); // 12

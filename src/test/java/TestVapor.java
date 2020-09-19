@@ -61,7 +61,7 @@ public class TestVapor {
 
   private void TEST(String testFileName) throws Exception {
     String filename = "./src/test/resources/VaporIRTestResource/input/"+testFileName+".java";
-    String expected = "./src/test/resources/VaporIRTestResource/out/"+testFileName+".out";
+    String expected = "./src/test/resources/VaporIRTestResource/out/"+testFileName+".java.out";
     J2V java2vapor = new J2V(getParser(new FileInputStream(new File(filename))));
     java2vapor.generateTranslation();
     writeToFile(java2vapor, testFileName);
@@ -99,7 +99,7 @@ public class TestVapor {
   public void OutOfBounds() throws Exception {
     String testFileName = Thread.currentThread().getStackTrace()[1].getMethodName();
     String filename = "./src/test/resources/VaporIRTestResource/input/"+testFileName+".java";
-    String expected = "./src/test/resources/VaporIRTestResource/out/"+testFileName+".out";
+    String expected = "./src/test/resources/VaporIRTestResource/out/"+testFileName+".java.out";
     J2V java2vapor = new J2V(new FileInputStream(new File(filename)));
     java2vapor.generateTranslation();
     writeToFile(java2vapor, testFileName);
@@ -166,12 +166,17 @@ public class TestVapor {
   }
 
   @Test
-  public void test2() throws Exception {
+  public void test10() throws Exception {
     TEST(Thread.currentThread().getStackTrace()[1].getMethodName());
   }
 
   @Test
-  public void test10() throws Exception {
+  public void test11() throws Exception {
+    TEST(Thread.currentThread().getStackTrace()[1].getMethodName());
+  }
+
+  @Test
+  public void test12() throws Exception {
     TEST(Thread.currentThread().getStackTrace()[1].getMethodName());
   }
 
@@ -180,15 +185,10 @@ public class TestVapor {
     TEST(Thread.currentThread().getStackTrace()[1].getMethodName());
   }
 
-  @Test
-  public void test14() throws Exception {
-    TEST(Thread.currentThread().getStackTrace()[1].getMethodName());
-  }
-
-  @Test
-  public void test15() throws Exception {
-    TEST(Thread.currentThread().getStackTrace()[1].getMethodName());
-  }
+//  @Test
+//  public void test14() throws Exception {
+//    TEST(Thread.currentThread().getStackTrace()[1].getMethodName());
+//  }
 
   @Test
   public void test16() throws Exception {
@@ -196,7 +196,42 @@ public class TestVapor {
   }
 
   @Test
+  public void test17() throws Exception {
+    TEST(Thread.currentThread().getStackTrace()[1].getMethodName());
+  }
+
+  @Test
+  public void test2() throws Exception {
+    TEST(Thread.currentThread().getStackTrace()[1].getMethodName());
+  }
+
+  @Test
+  public void test5() throws Exception {
+    TEST(Thread.currentThread().getStackTrace()[1].getMethodName());
+  }
+
+  @Test
+  public void test6() throws Exception {
+    TEST(Thread.currentThread().getStackTrace()[1].getMethodName());
+  }
+
+  @Test
   public void test66() throws Exception {
+    TEST(Thread.currentThread().getStackTrace()[1].getMethodName());
+  }
+
+  @Test
+  public void test7() throws Exception {
+    TEST(Thread.currentThread().getStackTrace()[1].getMethodName());
+  }
+
+  @Test
+  public void test8() throws Exception {
+    TEST(Thread.currentThread().getStackTrace()[1].getMethodName());
+  }
+
+  @Test
+  public void test9() throws Exception {
     TEST(Thread.currentThread().getStackTrace()[1].getMethodName());
   }
 
