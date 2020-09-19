@@ -19,7 +19,7 @@ public class FunctionVisitor extends GJDepthFirst<String, String> {
   // Logger
   private static final transient LOGGER log = new LOGGER(FunctionVisitor.class.getSimpleName());
 
-  private SymTable symbolTable = null;
+  private SymTable symbolTable;
   private final SymTable rootSymTable;
   private final LinkedList<String> finalVaporCode;
   private String indentation = "";
@@ -78,11 +78,6 @@ public class FunctionVisitor extends GJDepthFirst<String, String> {
     this.finalVaporCode.add(indentation+statement+comment);
     log.info("Added: "+finalVaporCode.getLast()+"; to vapor code", line);
   }
-
-
-  /**
-   * User defined methods starts here
-   */
 
 
   /**
@@ -212,7 +207,6 @@ public class FunctionVisitor extends GJDepthFirst<String, String> {
   }
 
   /**
-   * TODO
    * f0 -> "class"
    * f1 -> Identifier()
    * f2 -> "extends"
@@ -1126,6 +1120,7 @@ public class FunctionVisitor extends GJDepthFirst<String, String> {
       retval = "call " + methodTemporary + "(" + primaryExpressionTemp + _el + ")";
 
       // set the global type to the type of identifier()
+      assert binding != null;
       setGlobalType(((NodeToken) binding.getTypeObject().f0.choice).tokenImage);
 
       log.info("Left " + n.getClass().getSimpleName());
@@ -1208,7 +1203,7 @@ public class FunctionVisitor extends GJDepthFirst<String, String> {
       }
 
 
-      sb.append(" "+operandCheck(N.accept(this, argu)));
+      sb.append(" ").append(operandCheck(N.accept(this, argu)));
       log.info(""+binding.getScope());
       log.info("globalType: "+globalType);
 
@@ -1581,7 +1576,10 @@ public class FunctionVisitor extends GJDepthFirst<String, String> {
   }
 
   /**
-   *
+   * Function to allocate an integer array. This is because all miniJava arrays have an additional length function
+   * that returns the size of the array. This causes the size of the array to be increased by one to store this
+   * additional information. The following function allocated the array and stores this additional information in the
+   * first element.
    */
   private void AllocArray() {
     addToVaporCode("func AllocArray(size)");
@@ -1689,16 +1687,6 @@ public class FunctionVisitor extends GJDepthFirst<String, String> {
 
     LinkedList<String> s1keyset = new LinkedList<>(inheritanceLinks.get(s1.getName()));
     LinkedList<String> s2keyset = new LinkedList<>(inheritanceLinks.get(s2.getName()));
-
-    if (s1keyset == null) { // s1 does not inherit any class
-      s1keyset = new LinkedList<>();
-      s1keyset.add(s1.getName());
-    }
-
-    if (s2keyset == null) { // s2 does not inherit any class
-      s2keyset = new LinkedList<>();
-      s2keyset.add(s2.getName());
-    }
 
     log.info("s1 keyset: "+s1keyset);
     log.info("s2 keyset: "+s2keyset);
