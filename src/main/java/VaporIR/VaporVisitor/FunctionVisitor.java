@@ -1611,7 +1611,7 @@ public class FunctionVisitor extends GJDepthFirst<String, String> {
       add("[t.");
     }};
     for (String f : lastFunc) {
-      if (lhs.length()>=f.length() && lhs.substring(0, f.length()).equals(f)) {
+      if (lhs.length()>=f.length() && lhs.startsWith(f)) {
         tmp.createNew();
         addToVaporCode(tmp.get()+" = "+lhs);
         lhs = tmp.get();

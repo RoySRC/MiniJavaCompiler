@@ -1,14 +1,11 @@
 package VaporIR.VaporVisitor;
 
-import VaporIR.SymbolTableVisitor.SymTable;
-import VaporIR.SymbolTableVisitor.SymbolTableBuilder;
 import TypeChecking.TypeChecking.TypeCheckException;
+import VaporIR.SymbolTableVisitor.SymTable;
 import core.syntaxtree.*;
 import core.util.LOGGER;
 import core.util.util;
 import core.visitor.DepthFirstVisitor;
-import core.visitor.GJDepthFirst;
-import core.visitor.GJVisitor;
 
 import java.util.LinkedList;
 
