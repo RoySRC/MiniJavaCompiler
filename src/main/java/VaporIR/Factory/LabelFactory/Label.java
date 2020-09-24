@@ -1,5 +1,3 @@
 package VaporIR.Factory.LabelFactory;
 
-public interface Label {
-
-}
+public interface Label {}
