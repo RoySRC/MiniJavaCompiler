@@ -9,7 +9,13 @@ public class TMPVAR implements Label {
 
   private int COUNTER = -1;
 
-  public TMPVAR() {}
+  private static TMPVAR instance = new TMPVAR();
+
+  private TMPVAR() {}
+
+  public static TMPVAR getInstance() {
+    return instance;
+  }
 
   public String get() {
     return "t."+COUNTER;

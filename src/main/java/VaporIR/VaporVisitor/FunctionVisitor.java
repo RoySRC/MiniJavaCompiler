@@ -25,7 +25,7 @@ public class FunctionVisitor extends GJDepthFirst<String, String> {
   private final LinkedList<String> finalVaporCode;
   private String indentation = "";
 
-  private final TMPVAR tmp = new TMPVAR();
+  private final TMPVAR tmp = TMPVAR.getInstance();
   private int OFFSET = 0;
   private String globalType = null;
 
