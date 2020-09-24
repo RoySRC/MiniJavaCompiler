@@ -1,5 +1,6 @@
-package VaporIR.Factory.LabelFactory;
+package VaporIR.TempVars;
 
+import VaporIR.Factory.LabelFactory.Label;
 import core.util.LOGGER;
 
 public class TMPVAR implements Label {

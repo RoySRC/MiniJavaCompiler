@@ -32,9 +32,6 @@ public class LabelFactory {
       case BOUNDS:
         return new BOUNDS(BOUNDS_COUNTER++);
 
-      case TMPVAR:
-        return new TMPVAR();
-
       case AND:
         return new AND(AND_COUNTER++);
 

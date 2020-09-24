@@ -7,6 +7,7 @@ import VaporIR.SymbolTableVisitor.Binding;
 import VaporIR.SymbolTableVisitor.ReservedKeywords;
 import VaporIR.SymbolTableVisitor.SymTable;
 import TypeChecking.TypeChecking.TypeCheckException;
+import VaporIR.TempVars.TMPVAR;
 import core.syntaxtree.*;
 import core.util.LOGGER;
 import core.visitor.GJDepthFirst;
@@ -24,7 +25,7 @@ public class FunctionVisitor extends GJDepthFirst<String, String> {
   private final LinkedList<String> finalVaporCode;
   private String indentation = "";
 
-  private final TMPVAR tmp = (TMPVAR) LabelFactory.getInstance().createLabel(LabelFactory.TYPE.TMPVAR);
+  private final TMPVAR tmp = new TMPVAR();
   private int OFFSET = 0;
   private String globalType = null;
 
