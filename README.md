@@ -547,7 +547,7 @@ class A {
 The following table shows the translation of each statement in the main function of the above miniJava program into
 its Vapor IR code:
 
-| Statement Number | MiniJava Statement | Vapor IR Code |
+| Statement<br>Number | MiniJava Statement | Vapor IR Code |
 |-----|-----|-----|
 |1|int[] a;|No code generated, since it is a declaration 
 |2|a = new int[7];|  t.0 = call :AllocArray(7)<br>  a = t.0<br>  if a goto :null1<br>    Error("null pointer")<br>  null1:
