@@ -716,6 +716,9 @@ use the following command from the project root:
 ```
 This will generate a value of `33` on the terminal.
 
+## Future Work
+From the project structure, it can be seen that there are two symbol tables generated during the compilation process. The first symbol table is used for type checking and the second symbol table is used for generating the VaporIR code. Both of these symbol tables are virtually identical except for the binding information for the symbols and the operations performed on them. As a result they can be combined together into a single table which will be generated during the type checking phase and will be used in both the type checker and the VaporIR code generation systems.
+
 ## In-code citation
 All external resources used during the project are cited within the code.
 
