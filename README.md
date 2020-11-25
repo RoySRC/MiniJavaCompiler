@@ -563,7 +563,8 @@ following test case:
 ```java
 class A {
   public static void main(String[] a) {
-    System.out.println(((new B()).init()).getValue()); // throw an error since b is not initialized
+    // throw an error since b is not initialized
+    System.out.println(((new B()).init()).getValue());
   }
 }
 
