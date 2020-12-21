@@ -147,7 +147,7 @@ public class LinearScanRegisterAllocation {
    */
   public void ExpireOldIntervals(VaporVariable i) {
     log.info("Expiring old interval with live interval: "+i.toString());
-    for (VaporVariable j : new ArrayList<>(activeSet.data)) {
+    for (VaporVariable j : activeSet.data) {
       if (j.interval.getEnd() >= i.interval.getStart()) {
         log.info(String.format("End point of %s >= startpoint of %s", j.toString(), i.toString()));
         return;
