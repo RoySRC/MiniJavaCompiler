@@ -2,7 +2,7 @@
 ![](https://www.code-inspector.com/project/12409/status/svg?branch=master&kill_cache=1)
 
 # MiniJAVA Compiler
-This is a miniJAVA compiler for the MIPS platform. This compiler uses the vapor programming language as an
+This is a miniJAVA compiler for the MIPS platform for the compiler class (CS453) taught at Colorado State University by Dr. Pouchet. This compiler uses the vapor programming language as an
 intermediate representation and does incremental lowering to vapor-M and finally to MIPS assembly. This compiler only
 supports printing of integer values to screen, printing of strings are not supported. 
 
