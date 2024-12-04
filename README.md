@@ -6,6 +6,15 @@ This is a miniJAVA compiler for the MIPS platform for the compiler class (CS453)
 intermediate representation and does incremental lowering to vapor-M and finally to MIPS assembly. This compiler only
 supports printing of integer values to screen, printing of strings are not supported. 
 
+The following table shows the class average and my score for each of the four homeworks.
+
+|      |Class Average|My Score|
+|------|-------------|--------|
+| HW2  |    87.0     |   97   |
+| HW3  |    56.5     |   95   |
+| HW4  |    45.3     |   91   |
+| HW5  |    45.1     |  100   |
+
 ## MiniJAVA Grammar and TypeSystem
 The Backus–Naur form of the minijava programming language can be found 
 [here](http://www.cambridge.org/resources/052182060X/MCIIJ2e/grammar.htm). Documentation relating to the  MiniJava
