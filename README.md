@@ -6,7 +6,7 @@ This is a miniJAVA compiler for the MIPS platform for the compiler class (CS453)
 intermediate representation and does incremental lowering to vapor-M and finally to MIPS assembly. This compiler only
 supports printing of integer values to screen, printing of strings are not supported. 
 
-The following table shows the class average and my score for each of the four homeworks.
+The following table shows the class average and my score for each of the four homeworks/modules used in the compiler project.
 
 |      |Class Average|My Score|
 |------|-------------|--------|
